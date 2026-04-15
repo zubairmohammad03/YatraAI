@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YatraAI — White-Label Travel & Rental AI Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#FF6B00;--brand-d:#CC5200;--brand-l:#FF8C33;--brand-pale:#FFF4EE;--brand-xpale:#FFFAF7;
+  --deep:#0D0500;--ink:#1C0A00;--mid:#5C3D20;--muted:#9A8070;
+  --bg:#F8F5F2;--surface:#FFFFFF;--card:#FFFFFF;
+  --border:rgba(255,107,0,0.13);--border2:rgba(255,107,0,0.25);
+  --green:#1A6B35;--green-bg:#E6F4EC;--green-mid:#2A9A50;
+  --blue:#1A3F7A;--blue-bg:#E8EFF9;
+  --red:#A32020;--red-bg:#FAE8E8;
+  --amber:#8A5A00;--amber-bg:#FDF3E0;
+  --shadow:0 2px 20px rgba(255,107,0,0.08);
+  --shadow2:0 8px 40px rgba(255,107,0,0.12);
+  --r:10px;--r2:16px;--r3:24px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:15px;line-height:1.5}
+h1,h2,h3,h4,.num{font-family:'Syne',sans-serif}
+
+/* ─── SHELL ─── */
+.shell{display:flex;height:100vh;overflow:hidden}
+
+/* ─── SIDEBAR ─── */
+.sb{
+  width:240px;min-width:240px;background:var(--deep);display:flex;flex-direction:column;
+  border-right:1px solid rgba(255,107,0,0.12);overflow:hidden;position:relative;
+}
+.sb::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 20% 10%,rgba(255,107,0,0.12) 0%,transparent 60%);pointer-events:none;
+}
+.sb-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.logo-mark{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:36px;height:36px;border-radius:10px;background:var(--brand);display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;letter-spacing:-0.5px;flex-shrink:0;
+}
+.logo-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.logo-name em{color:var(--brand);font-style:normal}
+.logo-tag{font-size:10px;color:rgba(255,255,255,0.3);margin-top:1px;letter-spacing:1.2px;text-transform:uppercase}
+
+.sb-tenant{
+  margin:12px 14px;background:rgba(255,107,0,0.1);border:0.5px solid rgba(255,107,0,0.2);
+  border-radius:var(--r);padding:10px 12px;cursor:pointer;flex-shrink:0;
+}
+.tenant-row{display:flex;align-items:center;gap:10px}
+.tenant-av{
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:12px;color:#fff;flex-shrink:0;
+  background:var(--brand);
+}
+.tenant-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tenant-plan{font-size:10px;color:var(--brand);margin-top:1px}
+.tenant-switch{font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px}
+
+.sb-nav{flex:1;overflow-y:auto;padding:8px 10px}
+.sb-nav::-webkit-scrollbar{width:0}
+.nav-grp{font-size:9.5px;color:rgba(255,255,255,0.25);letter-spacing:1.8px;text-transform:uppercase;padding:12px 10px 5px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;
+  color:rgba(255,255,255,0.5);font-size:13.5px;font-weight:400;margin-bottom:1px;
+  transition:all 0.15s;position:relative;user-select:none;
+}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.8)}
+.nav-item.active{background:rgba(255,107,0,0.18);color:#fff;font-weight:500}
+.nav-item.active::before{
+  content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;
+  background:var(--brand);border-radius:0 3px 3px 0;
+}
+.nav-ic{width:16px;text-align:center;font-size:14px;flex-shrink:0}
+.nav-badge{
+  margin-left:auto;background:var(--brand);color:#fff;font-size:9.5px;font-weight:700;
+  padding:2px 7px;border-radius:20px;
+}
+.nav-badge.green{background:var(--green-mid)}
+
+.sb-bottom{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.sb-help{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;cursor:pointer;
+  color:rgba(255,255,255,0.4);font-size:13px;transition:all 0.15s;
+}
+.sb-help:hover{color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.04)}
+
+/* ─── MAIN ─── */
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column;background:var(--bg)}
+.main::-webkit-scrollbar{width:5px}
+.main::-webkit-scrollbar-thumb{background:rgba(255,107,0,0.2);border-radius:4px}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  display:flex;align-items:center;gap:14px;padding:14px 28px;
+  background:rgba(248,245,242,0.95);border-bottom:0.5px solid var(--border);
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);
+}
+.topbar-left{flex:1;display:flex;flex-direction:column}
+.topbar-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;line-height:1.2}
+.topbar-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;
+}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-d)}
+.btn-ghost{background:transparent;color:var(--ink);border:0.5px solid var(--border2)}
+.btn-ghost:hover{background:var(--brand-pale)}
+.btn-danger{background:var(--red-bg);color:var(--red);border:0.5px solid rgba(163,32,32,0.2)}
+.btn-success{background:var(--green-bg);color:var(--green);border:0.5px solid rgba(26,107,53,0.2)}
+
+/* ─── CONTENT ─── */
+.content{padding:24px 28px;flex:1}
+
+/* ─── PAGES ─── */
+.page{display:none;animation:fadeIn 0.2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── SECTION ─── */
+.section-label{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.section-label::after{content:'';flex:1;height:0.5px;background:var(--border)}
+
+/* ─── CARDS ─── */
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.card-head{padding:16px 20px 14px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-head-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;flex:1}
+.card-body{padding:20px}
+
+/* ─── METRICS ─── */
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.metric{
+  background:var(--card);border:0.5px solid var(--border);border-radius:var(--r2);
+  padding:18px 20px;position:relative;overflow:hidden;
+}
+.metric::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--brand);border-radius:var(--r2) var(--r2) 0 0;
+}
+.m-label{font-size:11.5px;color:var(--muted);margin-bottom:8px;font-weight:500}
+.m-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--ink);line-height:1}
+.m-sub{font-size:11.5px;margin-top:7px;display:flex;align-items:center;gap:4px;color:var(--muted)}
+.up{color:var(--green-mid)}.down{color:var(--red)}
+
+/* ─── GRID ─── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid-main{display:grid;grid-template-columns:1fr 340px;gap:18px}
+.gap18{gap:18px}
+
+/* ─── FORM ELEMENTS ─── */
+.form-stack{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+label.fl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.4px;text-transform:uppercase}
+input.fi,select.fi,textarea.fi{
+  background:var(--bg);border:0.5px solid var(--border2);border-radius:8px;
+  padding:9px 12px;font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);
+  outline:none;transition:border-color 0.15s;width:100%;
+}
+input.fi:focus,select.fi:focus,textarea.fi:focus{border-color:var(--brand);background:#fff}
+textarea.fi{resize:vertical;min-height:80px}
+select.fi{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A8070' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+
+/* toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--border)}
+.toggle-row:last-child{border-bottom:none;padding-bottom:0}
+.toggle-info .t-title{font-size:13.5px;font-weight:500;color:var(--ink)}
+.toggle-info .t-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-track{
+  position:absolute;top:0;left:0;right:0;bottom:0;background:#DDD;border-radius:22px;cursor:pointer;transition:background 0.2s;
+}
+.toggle input:checked+.toggle-track{background:var(--brand)}
+.toggle-thumb{
+  position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;
+  transition:transform 0.2s;pointer-events:none;
+}
+.toggle input:checked~.toggle-thumb{transform:translateX(18px)}
+
+/* ─── STATUS PILLS ─── */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:500}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.pill-green{background:var(--green-bg);color:var(--green)}
+.pill-orange{background:#FFF0E0;color:#CC5200}
+.pill-blue{background:var(--blue-bg);color:var(--blue)}
+.pill-red{background:var(--red-bg);color:var(--red)}
+.pill-gray{background:#F0EDE8;color:var(--mid)}
+.pill-amber{background:var(--amber-bg);color:var(--amber)}
+
+/* ─── TABLE ─── */
+.table-wrap{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th{padding:10px 16px;text-align:left;font-size:10.5px;color:var(--muted);font-weight:600;letter-spacing:0.6px;text-transform:uppercase;background:#FAFAF7;border-bottom:0.5px solid var(--border)}
+table.t td{padding:11px 16px;border-bottom:0.5px solid rgba(255,107,0,0.05);vertical-align:middle}
+table.t tr:last-child td{border-bottom:none}
+table.t tr:hover td{background:var(--brand-xpale)}
+.td-id{font-weight:600;color:var(--brand);font-size:12px}
+
+/* ─── ONBOARDING WIZARD ─── */
+.wizard{max-width:760px;margin:0 auto}
+.wizard-steps{display:flex;align-items:center;margin-bottom:32px;position:relative}
+.wizard-steps::before{
+  content:'';position:absolute;top:18px;left:18px;right:18px;height:1px;background:var(--border);z-index:0;
+}
+.ws{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;z-index:1}
+.ws-dot{
+  width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  color:var(--muted);transition:all 0.3s;
+}
+.ws.done .ws-dot{background:var(--green-mid);border-color:var(--green-mid);color:#fff}
+.ws.active .ws-dot{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 0 0 4px rgba(255,107,0,0.15)}
+.ws-label{font-size:11px;color:var(--muted);font-weight:500;text-align:center}
+.ws.active .ws-label{color:var(--brand);font-weight:600}
+.ws.done .ws-label{color:var(--green-mid)}
+
+.wizard-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.wiz-head{padding:24px 28px 20px;border-bottom:0.5px solid var(--border)}
+.wiz-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px}
+.wiz-sub{font-size:13.5px;color:var(--muted)}
+.wiz-body{padding:28px}
+.wiz-foot{padding:18px 28px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg)}
+
+.step-panel{display:none}
+.step-panel.active{display:block}
+
+/* color swatch */
+.swatches{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.swatch{
+  width:38px;height:38px;border-radius:10px;cursor:pointer;border:2.5px solid transparent;transition:all 0.15s;
+  position:relative;
+}
+.swatch.selected{border-color:var(--ink);transform:scale(1.1)}
+.swatch::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;opacity:0}
+.swatch.selected::after{opacity:1}
+
+/* vehicle table builder */
+.vehicle-builder{display:flex;flex-direction:column;gap:10px}
+.veh-row{
+  display:grid;grid-template-columns:2fr 1.5fr 1.2fr 1.2fr auto;gap:10px;align-items:center;
+  padding:12px 14px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);
+}
+.veh-row.head{background:transparent;border-color:transparent;padding-bottom:2px}
+.veh-head-label{font-size:10.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.del-btn{
+  width:28px;height:28px;border-radius:7px;background:var(--red-bg);border:none;cursor:pointer;
+  color:var(--red);font-size:14px;display:flex;align-items:center;justify-content:center;
+}
+.add-row-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;
+  border:1px dashed var(--border2);border-radius:var(--r);cursor:pointer;
+  font-size:13px;color:var(--brand);font-weight:500;transition:all 0.15s;margin-top:4px;
+}
+.add-row-btn:hover{background:var(--brand-pale)}
+
+/* preview phone mockup */
+.phone-frame{
+  width:280px;height:560px;border:2px solid var(--ink);border-radius:36px;overflow:hidden;
+  background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.15);flex-shrink:0;
+  display:flex;flex-direction:column;
+}
+.phone-notch{
+  height:28px;background:var(--ink);border-radius:0 0 20px 20px;
+  margin:0 auto;width:100px;
+}
+.phone-screen{flex:1;overflow:hidden;display:flex;flex-direction:column;font-size:12px}
+.phone-header{padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #eee}
+.phone-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.phone-name{font-weight:600;font-size:12px}
+.phone-status{font-size:10px;color:#4CAF50}
+.phone-chat{flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#F7F3EF}
+.phone-bubble{max-width:82%;padding:8px 11px;border-radius:12px;font-size:11.5px;line-height:1.5}
+.pb-ai{background:#fff;border-radius:0 12px 12px 12px;color:#111;align-self:flex-start;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.pb-user{color:#fff;border-radius:12px 0 12px 12px;align-self:flex-end}
+.phone-input-row{padding:8px 12px;border-top:0.5px solid #eee;display:flex;gap:6px;align-items:center;background:#fff}
+.phone-input-box{flex:1;background:#F7F3EF;border-radius:20px;padding:7px 12px;font-size:11px;color:#888}
+.phone-send{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+
+/* live agent panel */
+.agent-live{
+  background:var(--deep);border-radius:var(--r2);padding:22px;display:flex;flex-direction:column;gap:14px;
+  position:relative;overflow:hidden;
+}
+.agent-live::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 80% 0%,rgba(255,107,0,0.1) 0%,transparent 60%);pointer-events:none}
+.live-badge{display:flex;align-items:center;gap:6px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4CAF50;animation:livepulse 1.4s ease-in-out infinite}
+@keyframes livepulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}}
+.live-text{font-size:11.5px;color:rgba(255,255,255,0.6);font-weight:500}
+
+.call-card{
+  background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,107,0,0.25);
+  border-radius:var(--r);padding:16px;text-align:center;
+}
+.caller-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#fff}
+.caller-meta{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:2px}
+.waveform{display:flex;align-items:center;justify-content:center;gap:3px;height:36px;margin:12px 0 8px}
+.w-bar{width:3.5px;background:var(--brand);border-radius:2px;animation:ww 1s ease-in-out infinite}
+@keyframes ww{0%,100%{height:4px;opacity:0.3}50%{height:32px;opacity:1}}
+.w-bar:nth-child(1){animation-delay:0s}.w-bar:nth-child(2){animation-delay:0.1s}.w-bar:nth-child(3){animation-delay:0.2s}
+.w-bar:nth-child(4){animation-delay:0.3s}.w-bar:nth-child(5){animation-delay:0.4s}.w-bar:nth-child(6){animation-delay:0.3s}
+.w-bar:nth-child(7){animation-delay:0.2s}.w-bar:nth-child(8){animation-delay:0.1s}.w-bar:nth-child(9){animation-delay:0s}
+.call-timer{font-size:12px;color:var(--brand);letter-spacing:1px}
+
+.transcript{max-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.transcript::-webkit-scrollbar{width:0}
+.t-msg{font-size:12px}
+.t-msg .t-lbl{font-size:9.5px;color:rgba(255,255,255,0.3);margin-bottom:2px}
+.t-bub{display:inline-block;max-width:88%;padding:7px 11px;border-radius:10px;line-height:1.5}
+.t-ai .t-bub{background:rgba(255,107,0,0.15);color:rgba(255,255,255,0.85);border-radius:0 10px 10px 10px}
+.t-user{text-align:right}.t-user .t-bub{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);border-radius:10px 0 10px 10px}
+
+.extracted{
+  background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);
+  border-radius:8px;padding:10px 12px;
+}
+.ext-label{font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--brand);margin-bottom:7px;font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{background:rgba(255,107,0,0.18);border-radius:5px;padding:3px 9px;font-size:11px;color:rgba(255,255,255,0.85)}
+
+.action-strip{display:flex;gap:8px}
+.act-btn{flex:1;padding:9px;border-radius:8px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;transition:all 0.15s}
+.act-book{background:var(--brand);color:#fff}
+.act-book:hover{background:var(--brand-d)}
+.act-hold{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5)}
+
+/* ─── PRICING BUILDER ─── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.price-card{
+  background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--r);
+  padding:16px;display:flex;flex-direction:column;gap:10px;
+}
+.price-card-head{display:flex;align-items:center;gap:10px}
+.veh-icon{font-size:24px}
+.veh-type{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700}
+.veh-pax{font-size:11px;color:var(--muted)}
+.price-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.price-field label{font-size:10px;color:var(--muted);letter-spacing:0.4px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:3px}
+.price-field input{width:100%;background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:7px 10px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;color:var(--ink)}
+.price-field input:focus{border-color:var(--brand)}
+.rupee-prefix{position:relative}
+.rupee-prefix::before{content:'₹';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);z-index:1}
+.rupee-prefix input{padding-left:22px}
+
+/* ─── AI AGENT SETUP ─── */
+.agent-config{display:flex;gap:24px;align-items:flex-start}
+.agent-config-form{flex:1;display:flex;flex-direction:column;gap:14px}
+.voice-select{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.voice-opt{
+  border:0.5px solid var(--border2);border-radius:var(--r);padding:12px;cursor:pointer;
+  text-align:center;transition:all 0.15s;
+}
+.voice-opt:hover{border-color:var(--brand);background:var(--brand-pale)}
+.voice-opt.selected{border-color:var(--brand);background:var(--brand-pale)}
+.voice-opt .vo-icon{font-size:22px;margin-bottom:4px}
+.voice-opt .vo-name{font-size:12px;font-weight:600;color:var(--ink)}
+.voice-opt .vo-lang{font-size:10.5px;color:var(--muted)}
+
+.lang-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.lang-chip{
+  padding:5px 14px;border-radius:20px;border:0.5px solid var(--border2);
+  font-size:12.5px;cursor:pointer;transition:all 0.15s;color:var(--mid);
+}
+.lang-chip.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* ─── INTEGRATION ─── */
+.integration-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.int-card{
+  background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);
+  padding:16px;display:flex;flex-direction:column;gap:10px;
+}
+.int-head{display:flex;align-items:center;gap:10px}
+.int-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.int-name{font-size:13.5px;font-weight:600}
+.int-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.int-status{display:flex;align-items:center;justify-content:space-between}
+
+/* ─── INVITE ─── */
+.invite-card{background:linear-gradient(135deg,#FF6B00 0%,#FF8C33 100%);border-radius:var(--r2);padding:28px;color:#fff;margin-bottom:22px}
+.invite-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px}
+.invite-sub{font-size:14px;opacity:0.85;margin-bottom:20px}
+.invite-input-row{display:flex;gap:10px}
+.invite-input{flex:1;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:var(--r);padding:10px 14px;font-family:'Outfit',sans-serif;font-size:13.5px;color:#fff;outline:none}
+.invite-input::placeholder{color:rgba(255,255,255,0.5)}
+.invite-btn{background:#fff;color:var(--brand);border:none;border-radius:var(--r);padding:10px 20px;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer}
+
+/* ─── INSIGHT ROW ─── */
+.insight-row{display:flex;gap:12px;padding:13px 18px;border-bottom:0.5px solid var(--border);align-items:flex-start}
+.insight-row:last-child{border-bottom:none}
+.ins-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ins-text{font-size:13px;color:var(--mid);line-height:1.65}
+.ins-text strong{color:var(--ink);font-weight:600}
+
+/* ─── ACTIVITY FEED ─── */
+.activity-item{display:flex;gap:12px;padding:11px 18px;border-bottom:0.5px solid var(--border);align-items:flex-start}
+.activity-item:last-child{border-bottom:none}
+.act-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.act-text{font-size:13px;color:var(--mid);line-height:1.5;flex:1}
+.act-text strong{color:var(--ink);font-weight:500}
+.act-time{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* ─── PLAN CARDS ─── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.plan-card{
+  background:var(--card);border:0.5px solid var(--border);border-radius:var(--r2);
+  padding:24px;display:flex;flex-direction:column;gap:14px;position:relative;
+}
+.plan-card.popular{border-color:var(--brand);border-width:1.5px}
+.popular-badge{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--brand);color:#fff;font-size:10px;font-weight:700;padding:3px 14px;
+  border-radius:0 0 var(--r) var(--r);letter-spacing:0.5px;text-transform:uppercase;
+}
+.plan-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.plan-price{display:flex;align-items:baseline;gap:3px}
+.plan-rs{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--ink)}
+.plan-mo{font-size:12px;color:var(--muted)}
+.plan-features{display:flex;flex-direction:column;gap:7px}
+.plan-feat{display:flex;align-items:flex-start;gap:7px;font-size:13px;color:var(--mid)}
+.plan-feat::before{content:'✓';color:var(--green-mid);font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-feat.no{color:var(--muted)}
+.plan-feat.no::before{content:'—';color:var(--muted)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(255,107,0,0.2);border-radius:4px}
+
+/* ─── LOGIN OVERLAY ─── */
+.login-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+}
+.login-card{
+  background:#fff;border:0.5px solid var(--border);border-radius:var(--r3);
+  width:420px;overflow:hidden;box-shadow:var(--shadow2);
+}
+.login-head{
+  padding:32px 32px 24px;background:var(--deep);
+  background-image:radial-gradient(ellipse at 30% 10%,rgba(255,107,0,0.18) 0%,transparent 60%);
+}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.login-logo-icon{width:40px;height:40px;border-radius:11px;background:var(--brand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:#fff}
+.login-logo-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.login-logo-name em{color:var(--brand);font-style:normal}
+.login-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.login-sub{font-size:13px;color:rgba(255,255,255,0.4)}
+.login-body{padding:28px 32px 32px}
+.login-error{background:var(--red-bg);color:var(--red);border:0.5px solid rgba(163,32,32,0.2);border-radius:8px;padding:10px 14px;font-size:13px;display:none;margin-bottom:14px}
+.login-btn-full{width:100%;justify-content:center;padding:12px;font-size:14px;font-weight:600}
+.login-demo{margin-top:12px;text-align:center;font-size:12px;color:var(--muted)}
+
+/* ─── MODAL ─── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-box{
+  background:#fff;border-radius:var(--r2);width:100%;max-width:560px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden;
+}
+.modal-head{padding:18px 22px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700}
+.modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);line-height:1;padding:2px 6px;border-radius:6px}
+.modal-close:hover{background:var(--bg)}
+.modal-body{padding:22px}
+.modal-foot{padding:14px 22px;border-top:0.5px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:var(--bg)}
+
+/* ─── FLEET MANAGEMENT ─── */
+#fleet-mgmt-tbody tr:hover td{background:var(--brand-xpale)}
+
+/* ─── AI CHAT ─── */
+.chat-wrap{display:flex;flex-direction:column;height:420px}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.chat-input-row{display:flex;gap:10px;padding:14px;border-top:0.5px solid var(--border);background:#fff}
+.chat-input-row input{flex:1}
+
+/* RESPONSIVE HELPERS */
+@media(max-width:900px){.grid-main{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<!-- ══════════════ LOGIN OVERLAY ══════════════ -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-card">
+    <div class="login-head">
+      <div class="login-logo">
+        <div class="login-logo-icon">Y</div>
+        <div class="login-logo-name">Yatra<em>AI</em></div>
+      </div>
+      <div class="login-title">Welcome back 👋</div>
+      <div class="login-sub">Sign in to your travel operations dashboard</div>
+    </div>
+    <div class="login-body">
+      <div id="login-error" class="login-error"></div>
+      <div class="form-stack">
+        <div class="field">
+          <label class="fl">Email Address</label>
+          <input class="fi" id="login-email" type="email" value="admin@shreeramtravels.in" placeholder="you@company.in"/>
+        </div>
+        <div class="field">
+          <label class="fl">Password</label>
+          <input class="fi" id="login-password" type="password" value="demo1234" placeholder="Your password"
+            onkeydown="if(event.key==='Enter')doLogin()"/>
+        </div>
+      </div>
+      <button class="btn btn-primary login-btn-full" id="login-btn" onclick="doLogin()" style="margin-top:18px">
+        Sign In →
+      </button>
+      <div class="login-demo">Demo: admin@shreeramtravels.in / demo1234</div>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<nav class="sb">
+  <div class="sb-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">Y</div>
+      <div>
+        <div class="logo-name">Yatra<em>AI</em></div>
+        <div class="logo-tag">White-Label Platform</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-tenant" onclick="showPage('settings')">
+    <div class="tenant-row">
+      <div class="tenant-av" id="sb-av">SR</div>
+      <div>
+        <div class="tenant-name" id="sb-name">Shree Ram Travels</div>
+        <div class="tenant-plan" id="sb-plan">Pro Plan · Active</div>
+      </div>
+    </div>
+    <div class="tenant-switch">↕ Switch tenant</div>
+  </div>
+
+  <div class="sb-nav">
+    <div class="nav-grp">Main</div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-ic">📊</span>Dashboard</div>
+    <div class="nav-item" onclick="showPage('live',this)"><span class="nav-ic">🎙️</span>AI Voice Agent<span class="nav-badge green">Live</span></div>
+
+    <div class="nav-grp">Setup Wizard</div>
+    <div class="nav-item" onclick="showPage('setup',this)"><span class="nav-ic">🏢</span>Company Setup</div>
+    <div class="nav-item" onclick="showPage('fleet',this)"><span class="nav-ic">🚗</span>Fleet & Pricing</div>
+    <div class="nav-item" onclick="showPage('agent',this)"><span class="nav-ic">🤖</span>Agent Config</div>
+    <div class="nav-item" onclick="showPage('integrate',this)"><span class="nav-ic">🔗</span>Integrations</div>
+
+    <div class="nav-grp">Operations</div>
+    <div class="nav-item" onclick="showPage('bookings',this)"><span class="nav-ic">📋</span>Bookings<span class="nav-badge" id="nav-badge-bookings">4</span></div>
+    <div class="nav-item" onclick="showPage('tours',this)"><span class="nav-ic">🗺️</span>Tour Packages</div>
+    <div class="nav-item" onclick="showPage('customers',this)"><span class="nav-ic">👥</span>Customers</div>
+
+    <div class="nav-grp">Business</div>
+    <div class="nav-item" onclick="showPage('insights',this)"><span class="nav-ic">💡</span>AI Insights</div>
+    <div class="nav-item" onclick="showPage('billing',this)"><span class="nav-ic">💳</span>Plans & Billing</div>
+    <div class="nav-item" onclick="showPage('reseller',this)"><span class="nav-ic">🤝</span>Reseller Portal</div>
+  </div>
+
+  <div class="sb-bottom">
+    <div class="sb-help"><span>❓</span>Help & Support</div>
+    <div class="sb-help" onclick="doLogout()" style="color:rgba(255,100,100,0.6);margin-top:4px"><span>⏏</span>Logout</div>
+  </div>
+</nav>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+<!-- ──────────── DASHBOARD ──────────── -->
+<div class="page active" id="p-dashboard">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Good morning, Rajesh 👋</div>
+      <div class="topbar-sub">Today is Wednesday, 2 April 2026 · Shree Ram Travels</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost">⬇ Export</button>
+      <button class="btn btn-primary" onclick="showPage('bookings')">+ New Booking</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="metrics">
+      <div class="metric">
+        <div class="m-label">Total Revenue</div>
+        <div class="m-val" id="dash-revenue">—</div>
+        <div class="m-sub" style="color:var(--muted)">Confirmed + Completed</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">AI Calls Handled</div>
+        <div class="m-val" id="dash-calls">—</div>
+        <div class="m-sub up" id="dash-calls-sub">Loading...</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Active Bookings</div>
+        <div class="m-val" id="dash-bookings">—</div>
+        <div class="m-sub" id="dash-bookings-sub" style="color:var(--muted)">—</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">Fleet Available</div>
+        <div class="m-val" id="dash-fleet">—</div>
+        <div class="m-sub" id="dash-fleet-sub" style="color:var(--muted)">—</div>
+      </div>
+    </div>
+
+    <div class="grid-main" style="margin-bottom:18px">
+      <!-- LIVE AGENT PANEL -->
+      <div class="agent-live">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff">🎙️ Live AI Voice Agent</div>
+          <div class="live-badge"><div class="live-dot"></div><span class="live-text">Active Call</span></div>
+        </div>
+        <div class="call-card">
+          <div class="caller-name" id="dash-caller-name">Waiting for call...</div>
+          <div class="caller-meta" id="dash-caller-meta">WebSocket connected · Listening</div>
+          <div class="waveform">
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+          </div>
+          <div class="call-timer" id="dash-timer">00:00:00</div>
+        </div>
+        <div class="transcript" id="dash-transcript">
+          <div class="t-msg t-ai"><div class="t-lbl">System</div><div class="t-bub" style="opacity:0.5">Go to AI Voice Agent → click a test scenario to simulate a live call.</div></div>
+        </div>
+        <div class="extracted" id="dash-extracted" style="display:none">
+          <div class="ext-label">🧠 AI Extracted Intent</div>
+          <div class="tags" id="dash-intent-tags"></div>
+        </div>
+        <div class="action-strip">
+          <button class="act-btn act-book" id="dash-auto-book" onclick="showPage('bookings')">✓ Go to Bookings</button>
+          <button class="act-btn act-hold" onclick="simulateWSCall()">▶ Simulate Call</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: ACTIVITY + STATS -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-head"><div class="card-head-title">Today's AI Stats</div></div>
+          <div style="padding:0">
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--green-mid)"></div>
+              <div><div class="act-text">AI resolved <strong>67 of 71 calls</strong> without human help</div><div class="act-time">94% resolution rate</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--brand)"></div>
+              <div><div class="act-text"><strong>12 bookings</strong> auto-created from calls</div><div class="act-time">₹84,000 AI-generated revenue</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--blue)"></div>
+              <div><div class="act-text"><strong>3 languages</strong> handled: Hindi, English, Bhojpuri</div><div class="act-time">Avg call: 3m 12s</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--amber)"></div>
+              <div><div class="act-text"><strong>4 callbacks needed</strong> — callers dropped during booking</div><div class="act-time">Recommended: 6–8 PM</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-head-title">Hot Leads</div></div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--bg);border-radius:var(--r);padding:12px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="font-size:13.5px;font-weight:600">Amit Verma</div>
+                <span class="pill pill-orange">Hot</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">Rajasthan 7d · Family · WhatsApp · 8m ago</div>
+              <div style="display:flex;gap:7px;margin-top:9px">
+                <button class="btn btn-primary" style="flex:1;justify-content:center;padding:7px;font-size:12px">📞 Call</button>
+                <button class="btn btn-ghost" style="flex:1;justify-content:center;padding:7px;font-size:12px">✉ Quote</button>
+              </div>
+            </div>
+            <div style="background:var(--bg);border-radius:var(--r);padding:12px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="font-size:13.5px;font-weight:600">Sunita Rao</div>
+                <span class="pill pill-green">Booked</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">Char Dham · 14d · ₹98,000 · 22m ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS TABLE PREVIEW -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-title">Recent Bookings</div>
+        <button class="btn btn-ghost" onclick="showPage('bookings')" style="font-size:12px;padding:6px 12px">View all</button>
+      </div>
+      <div class="table-wrap">
+        <table class="t">
+          <thead><tr><th>Booking ID</th><th>Customer</th><th>Route</th><th>Vehicle</th><th>Dates</th><th>Amount</th><th>Status</th><th>Source</th></tr></thead>
+          <tbody id="dash-bookings-tbody">
+            <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── LIVE VOICE AGENT ──────────── -->
+<div class="page" id="p-live">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🎙️ AI Voice Agent — Live Console</div><div class="topbar-sub">Your AI is active and answering calls right now</div></div>
+    <div class="topbar-right">
+      <span class="pill pill-green"><span class="pill-dot"></span>Agent Online</span>
+      <button class="btn btn-danger">⏸ Pause Agent</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="grid2" style="margin-bottom:18px">
+      <!-- LIVE CALL via WebSocket -->
+      <div class="agent-live">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#fff">Live WebSocket Call</div>
+          <div class="live-badge"><div class="live-dot"></div><span class="live-text" id="live-status">Idle</span></div>
+        </div>
+        <div class="call-card">
+          <div class="caller-name" id="live-caller-name">No active call</div>
+          <div class="caller-meta" id="live-caller-meta">Click a scenario to simulate</div>
+          <div class="waveform">
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+          </div>
+          <div class="call-timer" id="live-timer">00:00:00</div>
+        </div>
+        <div class="transcript" id="live-transcript">
+          <div class="t-msg t-ai"><div class="t-lbl">System</div><div class="t-bub" style="opacity:0.5">Simulate a call to see live transcript here.</div></div>
+        </div>
+        <div class="extracted">
+          <div class="ext-label">🧠 Extracted Details</div>
+          <div class="tags" id="live-intent-tags"><span class="tag" style="opacity:0.5">Waiting for call...</span></div>
+        </div>
+        <div class="action-strip">
+          <button class="act-btn act-book" id="live-auto-book" onclick="showPage('bookings')">✓ Go to Bookings</button>
+          <button class="act-btn act-hold" onclick="simulateWSCall()">▶ Simulate Call</button>
+        </div>
+      </div>
+
+      <!-- CALL SCENARIOS / SIMULATOR -->
+      <div class="card">
+        <div class="card-head"><div class="card-head-title">📞 Test Call Scenarios</div></div>
+        <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:13px;color:var(--muted)">Simulate how your AI agent handles different customer types. Click to run scenario.</div>
+          <div id="scenario-list" style="display:flex;flex-direction:column;gap:8px">
+            <div class="scenario-item" onclick="runScenario(0)" style="border:0.5px solid var(--border2);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='var(--brand-pale)'" onmouseout="this.style.background='transparent'">
+              <div style="font-size:13px;font-weight:600">🗺️ Outstation Trip — Agra Day Trip <span style="font-size:11px;font-weight:400;color:var(--muted)">(Hindi)</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">"Agra ke liye Innova chahiye, kal ke liye"</div>
+            </div>
+            <div class="scenario-item" onclick="runScenario(1)" style="border:0.5px solid var(--border2);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='var(--brand-pale)'" onmouseout="this.style.background='transparent'">
+              <div style="font-size:13px;font-weight:600">🙏 Pilgrimage Package — Char Dham <span style="font-size:11px;font-weight:400;color:var(--muted)">(Hindi)</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">"Char dham yatra package kitne ka hai?"</div>
+            </div>
+            <div class="scenario-item" onclick="runScenario(2)" style="border:0.5px solid var(--border2);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='var(--brand-pale)'" onmouseout="this.style.background='transparent'">
+              <div style="font-size:13px;font-weight:600">💼 Corporate Transfer <span style="font-size:11px;font-weight:400;color:var(--muted)">(English)</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">"Need 3 cabs for airport pickup tomorrow 5 AM"</div>
+            </div>
+            <div class="scenario-item" onclick="runScenario(3)" style="border:0.5px solid var(--border2);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='var(--brand-pale)'" onmouseout="this.style.background='transparent'">
+              <div style="font-size:13px;font-weight:600">🎊 Wedding Fleet <span style="font-size:11px;font-weight:400;color:var(--muted)">(Hinglish)</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">"Shaadi ke liye 5 gaadiyan chahiye, Jaipur mein"</div>
+            </div>
+            <div class="scenario-item" onclick="runScenario(4)" style="border:0.5px solid var(--border2);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='var(--brand-pale)'" onmouseout="this.style.background='transparent'">
+              <div style="font-size:13px;font-weight:600">😠 Angry / Complaint Call <span style="font-size:11px;font-weight:400;color:var(--muted)">(Hindi)</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:2px">"Driver late tha! Bahut bura experience tha!"</div>
+            </div>
+          </div>
+        </div>
+        <!-- SCENARIO OUTPUT -->
+        <div id="scenario-output" style="display:none;border-top:0.5px solid var(--border);padding:16px;background:var(--bg)">
+          <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Simulated Transcript</div>
+          <div id="scenario-transcript" style="display:flex;flex-direction:column;gap:8px;font-size:13px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI CHAT PANEL -->
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-head">
+        <div class="card-head-title">🤖 Chat with AI Agent (Real Claude API)</div>
+        <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="chatHistory=[];chatSessionId='sess_'+Date.now();document.getElementById('chat-messages').innerHTML='';showToast('Chat cleared')">Clear</button>
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-messages" id="chat-messages">
+          <div class="t-msg t-ai">
+            <div class="t-lbl">YatraAI</div>
+            <div class="t-bub">Namaste! Main Yatra hoon — Shree Ram Travels ki AI assistant. Aaj aapki yatra ki kya planning hai? 🙏</div>
+          </div>
+        </div>
+        <div id="chat-intent" class="extracted" style="display:none;margin:0 16px 0"></div>
+        <div class="chat-input-row">
+          <input class="fi" id="chat-input" placeholder='Try: "Delhi se Manali ke liye Innova chahiye, 3 din ke liye"'
+            onkeydown="if(event.key==='Enter')sendChatMessage()"/>
+          <button class="btn btn-primary" onclick="sendChatMessage()">Send ↑</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALL LOG TABLE -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-title">Call Sessions Log</div>
+        <span class="pill pill-green" id="calls-count-pill" style="font-size:11px">Loading...</span>
+      </div>
+      <div class="table-wrap">
+        <table class="t">
+          <thead><tr><th>Time</th><th>Caller</th><th>Duration</th><th>Intent</th><th>Outcome</th></tr></thead>
+          <tbody id="calls-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── SETUP WIZARD: COMPANY ──────────── -->
+<div class="page" id="p-setup">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🏢 Company Setup</div><div class="topbar-sub">Configure your brand identity — takes 3 minutes</div></div>
+    <div class="topbar-right"><button class="btn btn-primary" onclick="saveCompany()">Save & Continue →</button></div>
+  </div>
+  <div class="content">
+    <div class="wizard" style="max-width:900px;margin:0 auto">
+      <div class="wizard-steps">
+        <div class="ws done" id="ws1"><div class="ws-dot">✓</div><div class="ws-label">Company</div></div>
+        <div class="ws" id="ws2"><div class="ws-dot">2</div><div class="ws-label">Fleet</div></div>
+        <div class="ws" id="ws3"><div class="ws-dot">3</div><div class="ws-label">AI Agent</div></div>
+        <div class="ws" id="ws4"><div class="ws-dot">4</div><div class="ws-label">Integrate</div></div>
+        <div class="ws" id="ws5"><div class="ws-dot">5</div><div class="ws-label">Go Live!</div></div>
+      </div>
+      <div class="wizard-card">
+        <div class="wiz-head">
+          <div class="wiz-title">Your Company Profile</div>
+          <div class="wiz-sub">This information will be used by the AI agent when speaking to customers</div>
+        </div>
+        <div class="wiz-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+            <div class="form-stack">
+              <div class="section-label">Basic Info</div>
+              <div class="field-row">
+                <div class="field"><label class="fl">Company Name</label><input class="fi" id="co-name" value="Shree Ram Travels" oninput="updateBrand()"/></div>
+                <div class="field"><label class="fl">Short Name / Initials</label><input class="fi" id="co-short" value="SR" maxlength="3" oninput="updateBrand()"/></div>
+              </div>
+              <div class="field"><label class="fl">Tagline (AI will use this)</label><input class="fi" id="co-tagline" value="Desh ka sabse bharosemand travel partner"/></div>
+              <div class="field-row">
+                <div class="field"><label class="fl">Business Type</label>
+                  <select class="fi">
+                    <option>Car Rental + Tours</option><option>Car Rental Only</option><option>Tour Operator Only</option>
+                    <option>Cab Aggregator</option><option>Corporate Fleet</option>
+                  </select>
+                </div>
+                <div class="field"><label class="fl">City / HQ</label><input class="fi" value="Lucknow, UP"/></div>
+              </div>
+              <div class="field"><label class="fl">Primary Phone (for calls)</label><input class="fi" value="+91 98765 00000" type="tel"/></div>
+              <div class="field"><label class="fl">WhatsApp Business Number</label><input class="fi" value="+91 98765 00000" type="tel"/></div>
+              <div class="field"><label class="fl">GST Number</label><input class="fi" value="09ABCDE1234F1Z5"/></div>
+
+              <div class="section-label" style="margin-top:8px">Brand Colors</div>
+              <div class="field"><label class="fl">Primary Color</label>
+                <div class="swatches">
+                  <div class="swatch selected" style="background:#FF6B00" data-color="#FF6B00" onclick="selectSwatch(this)"></div>
+                  <div class="swatch" style="background:#1A3F7A" data-color="#1A3F7A" onclick="selectSwatch(this)"></div>
+                  <div class="swatch" style="background:#1A6B35" data-color="#1A6B35" onclick="selectSwatch(this)"></div>
+                  <div class="swatch" style="background:#8B0000" data-color="#8B0000" onclick="selectSwatch(this)"></div>
+                  <div class="swatch" style="background:#5B2D8E" data-color="#5B2D8E" onclick="selectSwatch(this)"></div>
+                  <div class="swatch" style="background:#1C6B7A" data-color="#1C6B7A" onclick="selectSwatch(this)"></div>
+                  <input type="color" value="#FF6B00" id="custom-color" style="width:38px;height:38px;border-radius:10px;border:0.5px solid var(--border2);cursor:pointer;padding:2px" oninput="updateCustomColor(this)">
+                </div>
+              </div>
+
+              <div class="section-label" style="margin-top:8px">Operating Areas</div>
+              <div class="field"><label class="fl">Cities / States Covered</label><input class="fi" value="UP, Delhi-NCR, Uttarakhand, Rajasthan, MP"/></div>
+            </div>
+
+            <!-- LIVE PREVIEW -->
+            <div>
+              <div class="section-label">Live Brand Preview</div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:20px">
+                <!-- Sidebar preview -->
+                <div style="background:var(--deep);border-radius:14px;padding:16px;width:100%">
+                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                    <div id="prev-av" style="width:36px;height:36px;border-radius:10px;background:var(--brand);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:#fff">SR</div>
+                    <div>
+                      <div id="prev-name" style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff">Shree Ram Travels</div>
+                      <div style="font-size:10px;color:rgba(255,255,255,0.4)">AI-Powered Travel OS</div>
+                    </div>
+                  </div>
+                  <div style="background:rgba(255,107,0,0.1);border:0.5px solid rgba(255,107,0,0.2);border-radius:8px;padding:10px 12px">
+                    <div style="font-size:11.5px;color:rgba(255,255,255,0.6)">AI Agent greeting:</div>
+                    <div id="prev-greeting" style="font-size:12px;color:#fff;margin-top:4px;font-style:italic">"Namaste! Shree Ram Travels mein aapka swagat hai..."</div>
+                  </div>
+                </div>
+
+                <!-- Phone mockup -->
+                <div class="phone-frame">
+                  <div style="height:10px;background:var(--ink)"></div>
+                  <div style="display:flex;justify-content:center;padding:4px 0;background:var(--ink)"><div style="width:60px;height:4px;border-radius:2px;background:rgba(255,255,255,0.1)"></div></div>
+                  <div class="phone-screen">
+                    <div class="phone-header">
+                      <div class="phone-avatar" id="prev-ph-av" style="background:var(--brand)">SR</div>
+                      <div>
+                        <div class="phone-name" id="prev-ph-name">Shree Ram Travels AI</div>
+                        <div class="phone-status">● Online</div>
+                      </div>
+                    </div>
+                    <div class="phone-chat">
+                      <div class="phone-bubble pb-ai">Namaste! 🙏<br>Shree Ram Travels mein aapka swagat hai. Kaise madad karoon?</div>
+                      <div class="phone-bubble pb-user" id="prev-ph-user" style="background:var(--brand)">Agra ke liye Innova chahiye</div>
+                      <div class="phone-bubble pb-ai">Ji bilkul! Innova Crysta available hai ₹6,200/din. Kab jaana hai? 😊</div>
+                    </div>
+                    <div class="phone-input-row">
+                      <div class="phone-input-box">Type a message...</div>
+                      <div class="phone-send" id="prev-ph-send" style="background:var(--brand)">↑</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wiz-foot">
+          <div style="font-size:13px;color:var(--muted)">Step 1 of 5 — Company Profile</div>
+          <button class="btn btn-primary" onclick="showPage('fleet')">Continue to Fleet Setup →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── FLEET & PRICING ──────────── -->
+<div class="page" id="p-fleet">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🚗 Fleet & Pricing Setup</div><div class="topbar-sub">Add your vehicles and set rates — AI will quote these automatically</div></div>
+    <div class="topbar-right"><button class="btn btn-primary" onclick="showPage('agent')">Save & Continue →</button></div>
+  </div>
+  <div class="content">
+    <div style="max-width:900px;margin:0 auto">
+      <!-- LIVE FLEET FROM API -->
+      <div class="section-label">Fleet Management</div>
+      <div class="card" style="margin-bottom:22px">
+        <div class="card-head">
+          <div class="card-head-title">Live Fleet Status</div>
+          <button class="btn btn-primary" style="font-size:12px;padding:6px 12px" onclick="openModal('vehicle-modal')">+ Add Vehicle</button>
+        </div>
+        <div class="table-wrap">
+          <table class="t">
+            <thead><tr><th>Vehicle</th><th>Registration</th><th>Capacity</th><th>Rate/Day</th><th>Rate/KM</th><th>Status</th><th>Change Status</th></tr></thead>
+            <tbody id="fleet-mgmt-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Loading fleet...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-label">Setup Wizard — Add Vehicles in Bulk</div>
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-head"><div class="card-head-title">Vehicle Inventory Builder</div><button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="addVehicleRow()">+ Add Row</button></div>
+        <div style="padding:16px">
+          <div class="vehicle-builder">
+            <div class="veh-row head">
+              <div class="veh-head-label">Vehicle Type</div>
+              <div class="veh-head-label">Registration</div>
+              <div class="veh-head-label">Capacity</div>
+              <div class="veh-head-label">Status</div>
+              <div></div>
+            </div>
+            <div id="fleet-rows">
+              <div class="veh-row"><input class="fi" value="Innova Crysta" style="font-size:13px"/><input class="fi" value="UP32 AB 1234" style="font-size:13px"/><select class="fi" style="font-size:13px"><option>7 Seater</option><option>6 Seater</option><option>4 Seater</option><option>12 Seater</option><option>16 Seater</option><option>20 Seater</option></select><select class="fi" style="font-size:13px"><option>Available</option><option>On Trip</option><option>Maintenance</option></select><button class="del-btn" onclick="this.closest('.veh-row').remove()">✕</button></div>
+              <div class="veh-row"><input class="fi" value="Ertiga" style="font-size:13px"/><input class="fi" value="UP32 CD 5678" style="font-size:13px"/><select class="fi" style="font-size:13px"><option>7 Seater</option><option>6 Seater</option><option selected>6 Seater</option></select><select class="fi" style="font-size:13px"><option>Available</option><option>On Trip</option><option>Maintenance</option></select><button class="del-btn" onclick="this.closest('.veh-row').remove()">✕</button></div>
+              <div class="veh-row"><input class="fi" value="Fortuner" style="font-size:13px"/><input class="fi" value="UP32 EF 9012" style="font-size:13px"/><select class="fi" style="font-size:13px"><option>7 Seater</option></select><select class="fi" style="font-size:13px"><option>Available</option><option selected>On Trip</option><option>Maintenance</option></select><button class="del-btn" onclick="this.closest('.veh-row').remove()">✕</button></div>
+              <div class="veh-row"><input class="fi" value="Tempo Traveller" style="font-size:13px"/><input class="fi" value="UP32 GH 3456" style="font-size:13px"/><select class="fi" style="font-size:13px"><option>12 Seater</option><option selected>16 Seater</option><option>20 Seater</option></select><select class="fi" style="font-size:13px"><option>Available</option><option>On Trip</option><option>Maintenance</option></select><button class="del-btn" onclick="this.closest('.veh-row').remove()">✕</button></div>
+              <div class="veh-row"><input class="fi" value="Swift Dzire" style="font-size:13px"/><input class="fi" value="UP32 IJ 7890" style="font-size:13px"/><select class="fi" style="font-size:13px"><option selected>4 Seater</option></select><select class="fi" style="font-size:13px"><option>Available</option><option>On Trip</option><option selected>Maintenance</option></select><button class="del-btn" onclick="this.closest('.veh-row').remove()">✕</button></div>
+            </div>
+            <div class="add-row-btn" onclick="addVehicleRow()">+ Add Another Vehicle</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Pricing Rates (AI quotes these to customers)</div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-card-head"><span class="veh-icon">🚗</span><div><div class="veh-type">Innova Crysta</div><div class="veh-pax">6–7 Seater · AC</div></div></div>
+          <div class="price-fields">
+            <div class="price-field rupee-prefix"><label>Per Day</label><input value="6200"/></div>
+            <div class="price-field rupee-prefix"><label>Per KM</label><input value="14"/></div>
+            <div class="price-field rupee-prefix"><label>Airport Drop</label><input value="1800"/></div>
+            <div class="price-field rupee-prefix"><label>Per Hour</label><input value="900"/></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-card-head"><span class="veh-icon">🚙</span><div><div class="veh-type">Ertiga</div><div class="veh-pax">6 Seater · AC</div></div></div>
+          <div class="price-fields">
+            <div class="price-field rupee-prefix"><label>Per Day</label><input value="3800"/></div>
+            <div class="price-field rupee-prefix"><label>Per KM</label><input value="10"/></div>
+            <div class="price-field rupee-prefix"><label>Airport Drop</label><input value="1200"/></div>
+            <div class="price-field rupee-prefix"><label>Per Hour</label><input value="600"/></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-card-head"><span class="veh-icon">🏎️</span><div><div class="veh-type">Fortuner</div><div class="veh-pax">7 Seater · 4WD</div></div></div>
+          <div class="price-fields">
+            <div class="price-field rupee-prefix"><label>Per Day</label><input value="9000"/></div>
+            <div class="price-field rupee-prefix"><label>Per KM</label><input value="18"/></div>
+            <div class="price-field rupee-prefix"><label>Airport Drop</label><input value="2500"/></div>
+            <div class="price-field rupee-prefix"><label>Per Hour</label><input value="1200"/></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-card-head"><span class="veh-icon">🚌</span><div><div class="veh-type">Tempo Traveller</div><div class="veh-pax">12–16 Seater</div></div></div>
+          <div class="price-fields">
+            <div class="price-field rupee-prefix"><label>Per Day</label><input value="9500"/></div>
+            <div class="price-field rupee-prefix"><label>Per KM</label><input value="20"/></div>
+            <div class="price-field rupee-prefix"><label>Airport Drop</label><input value="—"/></div>
+            <div class="price-field rupee-prefix"><label>Per Hour</label><input value="1400"/></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-card-head"><span class="veh-icon">🚗</span><div><div class="veh-type">Swift Dzire</div><div class="veh-pax">4 Seater · AC</div></div></div>
+          <div class="price-fields">
+            <div class="price-field rupee-prefix"><label>Per Day</label><input value="2400"/></div>
+            <div class="price-field rupee-prefix"><label>Per KM</label><input value="8"/></div>
+            <div class="price-field rupee-prefix"><label>Airport Drop</label><input value="900"/></div>
+            <div class="price-field rupee-prefix"><label>Per Hour</label><input value="400"/></div>
+          </div>
+        </div>
+        <div class="price-card" style="border:1px dashed var(--border2);cursor:pointer;align-items:center;justify-content:center;min-height:160px" onclick="alert('Add custom vehicle type')">
+          <div style="text-align:center;color:var(--brand)">
+            <div style="font-size:28px">+</div>
+            <div style="font-size:13px;font-weight:600;margin-top:6px">Add Vehicle Type</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:20px">
+        <button class="btn btn-primary" onclick="showPage('agent')">Save Fleet & Continue →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── AI AGENT CONFIG ──────────── -->
+<div class="page" id="p-agent">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🤖 AI Agent Configuration</div><div class="topbar-sub">Customize your AI's voice, language, and behaviour</div></div>
+    <div class="topbar-right"><button class="btn btn-primary" onclick="saveAgentConfig()">Save & Continue →</button></div>
+  </div>
+  <div class="content">
+    <div style="max-width:900px;margin:0 auto">
+      <div class="grid2" style="margin-bottom:18px">
+        <div class="card">
+          <div class="card-head"><div class="card-head-title">🗣️ Voice & Language</div></div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div class="field"><label class="fl">Agent Name</label><input class="fi" id="ac-name" value="Yatra" placeholder="e.g. Priya, Arjun, SaathiAI"/></div>
+            <div class="field">
+              <label class="fl">Select Voice</label>
+              <div class="voice-select" style="margin-top:6px">
+                <div class="voice-opt selected" data-voice="female" onclick="selectVoice(this)">
+                  <div class="vo-icon">👩</div><div class="vo-name">Priya</div><div class="vo-lang">Female · Warm</div>
+                </div>
+                <div class="voice-opt" data-voice="male" onclick="selectVoice(this)">
+                  <div class="vo-icon">👨</div><div class="vo-name">Arjun</div><div class="vo-lang">Male · Professional</div>
+                </div>
+                <div class="voice-opt" data-voice="female2" onclick="selectVoice(this)">
+                  <div class="vo-icon">👩‍💼</div><div class="vo-name">Radha</div><div class="vo-lang">Female · Friendly</div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="fl">Languages</label>
+              <div class="lang-chips">
+                <div class="lang-chip sel" onclick="this.classList.toggle('sel')">Hindi</div>
+                <div class="lang-chip sel" onclick="this.classList.toggle('sel')">English</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Hinglish</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Bhojpuri</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Marathi</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Gujarati</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Tamil</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Bengali</div>
+                <div class="lang-chip" onclick="this.classList.toggle('sel')">Telugu</div>
+              </div>
+            </div>
+            <div class="field"><label class="fl">Greeting Message</label><textarea class="fi" id="ac-greeting" rows="2">Namaste! Main aapki yatra mein madad kar sakta hoon.</textarea></div>
+            <div class="field"><label class="fl">Auto-Confirm Below (₹)</label><input class="fi" id="ac-auto-confirm" type="number" value="5000" placeholder="5000"/></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-head-title">⚙️ Booking Automation Rules</div></div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:0">
+            <div class="toggle-row">
+              <div class="toggle-info"><div class="t-title">Auto-confirm bookings</div><div class="t-sub">Below ₹25,000 — no human approval needed</div></div>
+              <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><div class="t-title">Send WhatsApp confirmation</div><div class="t-sub">Instant booking receipt to customer</div></div>
+              <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><div class="t-title">Collect advance payment link</div><div class="t-sub">Razorpay / UPI link via WhatsApp</div></div>
+              <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><div class="t-title">Escalate angry callers</div><div class="t-sub">Transfer to human if sentiment is negative</div></div>
+              <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><div class="t-title">Upsell tour packages</div><div class="t-sub">Offer package when customer asks for rental</div></div>
+              <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><div class="t-title">24/7 operation</div><div class="t-sub">AI active round the clock</div></div>
+              <label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <div class="toggle-row" style="border-bottom:none;padding-bottom:0">
+              <div class="toggle-info"><div class="t-title">SMS fallback</div><div class="t-sub">Send SMS if WhatsApp fails</div></div>
+              <label class="toggle"><input type="checkbox"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-head-title">📝 AI Knowledge Base</div><span class="pill pill-green" style="font-size:11px">Auto-trained from your data</span></div>
+        <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+          <div class="field"><label class="fl">Popular Routes (AI will suggest these)</label><textarea class="fi" rows="5">Lucknow → Agra
+Delhi → Manali
+Delhi → Shimla
+Jaipur → Udaipur
+Varanasi → Ayodhya
+Delhi → Haridwar</textarea></div>
+          <div class="field"><label class="fl">Tour Packages (with pricing)</label><textarea class="fi" rows="5">Char Dham Yatra - ₹98,000 (14d)
+Rajasthan Circuit - ₹54,000 (8d)
+Himalayan Tour - ₹38,000 (6d)
+Golden Triangle - ₹22,000 (4d)
+South India - ₹1,10,000 (12d)</textarea></div>
+          <div class="field"><label class="fl">Common FAQs (AI will answer these)</label><textarea class="fi" rows="5">Q: Driver kahan se aayega?
+A: Driver aapke ghar aayega.
+
+Q: Advance kitna dena hoga?
+A: 20% advance.
+
+Q: Toll included hai?
+A: Nahi, toll alag dena hoga.</textarea></div>
+        </div>
+        <div style="padding:0 20px 20px;display:flex;justify-content:flex-end">
+          <button class="btn btn-primary" onclick="showPage('integrate')">Save Agent Config & Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── INTEGRATIONS ──────────── -->
+<div class="page" id="p-integrate">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🔗 Integrations</div><div class="topbar-sub">Connect your phone, payments, and messaging — one click setup</div></div>
+    <div class="topbar-right"><button class="btn btn-primary" onclick="goLive()">🚀 Go Live!</button></div>
+  </div>
+  <div class="content">
+    <div class="integration-cards" style="margin-bottom:18px">
+      <div class="int-card">
+        <div class="int-head"><div class="int-icon" style="background:#E8F5E9">📞</div><div><div class="int-name">Phone Number</div><span class="pill pill-green" style="font-size:10px">Connected</span></div></div>
+        <div class="int-desc">Your calls on +91 98765 00000 are routed to YatraAI agent automatically.</div>
+        <div class="int-status"><span style="font-size:12px;color:var(--muted)">via Exotel</span><button class="btn btn-ghost" style="font-size:12px;padding:5px 10px">Configure</button></div>
+      </div>
+      <div class="int-card">
+        <div class="int-head"><div class="int-icon" style="background:#E8F5E9">💬</div><div><div class="int-name">WhatsApp Business</div><span class="pill pill-green" style="font-size:10px">Connected</span></div></div>
+        <div class="int-desc">Booking confirmations and quotes sent via WhatsApp automatically.</div>
+        <div class="int-status"><span style="font-size:12px;color:var(--muted)">via Interakt</span><button class="btn btn-ghost" style="font-size:12px;padding:5px 10px">Manage</button></div>
+      </div>
+      <div class="int-card">
+        <div class="int-head"><div class="int-icon" style="background:#FFF3E0">💳</div><div><div class="int-name">Razorpay</div><span class="pill pill-orange" style="font-size:10px">Pending</span></div></div>
+        <div class="int-desc">Collect advance payment via UPI, cards & net banking links sent over WhatsApp.</div>
+        <div class="int-status"><button class="btn btn-primary" style="font-size:12px;padding:6px 12px">Connect →</button></div>
+      </div>
+      <div class="int-card">
+        <div class="int-head"><div class="int-icon" style="background:#E3F2FD">📧</div><div><div class="int-name">Email / SMS</div><span class="pill pill-orange" style="font-size:10px">Setup Needed</span></div></div>
+        <div class="int-desc">Send booking invoices and reminders by email and SMS to customers.</div>
+        <div class="int-status"><button class="btn btn-primary" style="font-size:12px;padding:6px 12px">Connect →</button></div>
+      </div>
+      <div class="int-card">
+        <div class="int-head"><div class="int-icon" style="background:#F3E5F5">📊</div><div><div class="int-name">Google Sheets</div><span class="pill pill-gray" style="font-size:10px">Optional</span></div></div>
+        <div class="int-desc">Auto-export bookings to a Google Sheet for your team's reference.</div>
+        <div class="int-status"><button class="btn btn-ghost" style="font-size:12px;padding:5px 10px">Connect</button></div>
+      </div>
+      <div class="int-card">
+        <div class="int-head"><div class="int-icon" style="background:#FFF8E1">🗺️</div><div><div class="int-name">MakeMyTrip / Goibibo</div><span class="pill pill-gray" style="font-size:10px">Optional</span></div></div>
+        <div class="int-desc">Sync availability and accept bookings from MMT & Goibibo platforms.</div>
+        <div class="int-status"><button class="btn btn-ghost" style="font-size:12px;padding:5px 10px">Connect</button></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-head-title">📱 Embed on Your Website</div><span class="pill pill-blue" style="font-size:10px">Copy & Paste</span></div>
+      <div style="padding:20px">
+        <div style="font-size:13.5px;color:var(--mid);margin-bottom:12px">Add the YatraAI chat widget to your website — customers can enquire and book 24/7.</div>
+        <div style="background:var(--deep);border-radius:var(--r);padding:16px;font-family:monospace;font-size:12.5px;color:#A8D8A8;line-height:1.7;overflow-x:auto">
+          &lt;!-- YatraAI Widget --&gt;<br>
+          &lt;script src="https://cdn.yatraai.in/widget.js"<br>
+          &nbsp;&nbsp;data-tenant="shree-ram-travels"<br>
+          &nbsp;&nbsp;data-color="#FF6B00"<br>
+          &nbsp;&nbsp;data-lang="hi,en"&gt;<br>
+          &lt;/script&gt;
+        </div>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button class="btn btn-ghost">📋 Copy Code</button>
+          <button class="btn btn-ghost">📘 View Docs</button>
+          <button class="btn btn-success">✓ Already Installed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── BOOKINGS ──────────── -->
+<div class="page" id="p-bookings">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">📋 Booking Management</div><div class="topbar-sub" id="bk-topbar-sub">Loading...</div></div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost">Filter</button>
+      <button class="btn btn-ghost">⬇ Export</button>
+      <button class="btn btn-primary" onclick="openModal('booking-modal')">+ New Booking</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="metrics" style="grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:18px">
+      <div class="metric"><div class="m-label">All Bookings</div><div class="m-val" id="bk-all">—</div></div>
+      <div class="metric"><div class="m-label">Confirmed</div><div class="m-val" id="bk-confirmed" style="color:var(--green-mid)">—</div></div>
+      <div class="metric"><div class="m-label">Pending</div><div class="m-val" id="bk-pending" style="color:var(--brand)">—</div></div>
+      <div class="metric"><div class="m-label">On Trip</div><div class="m-val" id="bk-ontrip" style="color:var(--blue)">—</div></div>
+      <div class="metric"><div class="m-label">Completed</div><div class="m-val" id="bk-completed" style="color:var(--muted)">—</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;border-bottom:0.5px solid var(--border)">
+        <div style="padding:11px 18px;font-size:13px;color:var(--brand);font-weight:500;border-bottom:2px solid var(--brand);margin-bottom:-0.5px;cursor:pointer">All (24)</div>
+        <div style="padding:11px 18px;font-size:13px;color:var(--muted);cursor:pointer">Confirmed (14)</div>
+        <div style="padding:11px 18px;font-size:13px;color:var(--muted);cursor:pointer">Pending (3)</div>
+        <div style="padding:11px 18px;font-size:13px;color:var(--muted);cursor:pointer">On Trip (4)</div>
+        <div style="padding:11px 18px;font-size:13px;color:var(--muted);cursor:pointer">Completed (3)</div>
+      </div>
+      <div class="table-wrap">
+        <table class="t">
+          <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Route</th><th>Vehicle</th><th>Dates</th><th>Amount</th><th>Status</th><th>Source</th><th>Actions</th></tr></thead>
+          <tbody id="bookings-tbody">
+            <tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted)">Loading bookings...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TOURS ──────────── -->
+<div class="page" id="p-tours">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🗺️ Tour Packages</div></div>
+    <div class="topbar-right"><button class="btn btn-primary">+ Create Package</button></div>
+  </div>
+  <div class="content">
+    <div class="grid3" id="tours-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">Loading tour packages...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── CUSTOMERS ──────────── -->
+<div class="page" id="p-customers">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">👥 Customer Database</div><div class="topbar-sub" id="cust-topbar-sub">Loading...</div></div>
+    <div class="topbar-right"><button class="btn btn-ghost">Export CSV</button><button class="btn btn-primary">+ Add Customer</button></div>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div class="card-head"><div class="card-head-title">All Customers</div><input class="fi" placeholder="Search by name or phone..." style="width:220px;font-size:13px;padding:7px 12px"/></div>
+      <div class="table-wrap">
+        <table class="t">
+          <thead><tr><th>Name</th><th>Phone</th><th>City</th><th>Trips</th><th>Spend</th><th>Last Booking</th><th>Segment</th><th>Actions</th></tr></thead>
+          <tbody id="customers-tbody">
+            <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">Loading customers...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── AI INSIGHTS ──────────── -->
+<div class="page" id="p-insights">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">💡 AI Insights & Revenue Intelligence</div></div>
+  </div>
+  <div class="content">
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="card">
+        <div class="card-head"><div class="card-head-title">Smart Recommendations</div></div>
+        <div>
+          <div class="insight-row"><div class="ins-icon" style="background:#FFF3E0">💡</div><div class="ins-text"><strong>Pricing opportunity:</strong> Char Dham demand is 3x normal next 3 weeks. Raise Innova rate by 12–15% — estimated extra revenue: ₹32,000.</div></div>
+          <div class="insight-row"><div class="ins-icon" style="background:var(--red-bg)">⚠️</div><div class="ins-text"><strong>Fleet gap:</strong> 8 Tempo Traveller enquiries in next 10 days, only 2 available. Consider sub-contracting 2 more.</div></div>
+          <div class="insight-row"><div class="ins-icon" style="background:var(--blue-bg)">📊</div><div class="ins-text"><strong>Top route:</strong> Delhi → Manali highest revenue route this month — ₹2.1L. Consider a dedicated package.</div></div>
+          <div class="insight-row"><div class="ins-icon" style="background:var(--green-bg)">📞</div><div class="ins-text"><strong>Callback list:</strong> 4 dropped callers today. Best time to call back: 6–8 PM — 73% answer rate.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-head-title">Revenue by Category</div><span style="font-size:12px;color:var(--muted)">This month: ₹6.8L</span></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Tour Packages</span><span style="font-weight:600">₹3.2L · 47%</span></div><div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:47%;height:100%;background:var(--brand);border-radius:4px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Outstation Rentals</span><span style="font-weight:600">₹2.1L · 31%</span></div><div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:31%;height:100%;background:var(--blue);border-radius:4px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Airport Transfers</span><span style="font-weight:600">₹1.1L · 16%</span></div><div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:16%;height:100%;background:var(--green-mid);border-radius:4px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Local / Hourly</span><span style="font-weight:600">₹40K · 6%</span></div><div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:6%;height:100%;background:var(--muted);border-radius:4px"></div></div></div>
+          <div style="padding-top:8px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;font-size:13px">
+            <span style="font-weight:600">AI-generated revenue share</span>
+            <span style="font-weight:700;color:var(--green-mid)">62%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── BILLING / PLANS ──────────── -->
+<div class="page" id="p-billing">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">💳 Plans & Billing</div><div class="topbar-sub">Current plan: Pro · Renews 1 July 2026</div></div>
+  </div>
+  <div class="content">
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><span class="plan-rs">₹1,999</span><span class="plan-mo">/month</span></div>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:-6px">Perfect for small operators</div>
+        <div class="plan-features">
+          <div class="plan-feat">AI Voice Agent (Hindi + English)</div>
+          <div class="plan-feat">Up to 10 vehicles</div>
+          <div class="plan-feat">500 AI calls/month</div>
+          <div class="plan-feat">WhatsApp confirmations</div>
+          <div class="plan-feat">Booking management</div>
+          <div class="plan-feat no">Tour packages</div>
+          <div class="plan-feat no">Revenue analytics</div>
+          <div class="plan-feat no">Multi-user access</div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;justify-content:center">Downgrade</button>
+      </div>
+      <div class="plan-card popular">
+        <div class="popular-badge">MOST POPULAR</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><span class="plan-rs">₹4,999</span><span class="plan-mo">/month</span></div>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:-6px">For growing travel businesses</div>
+        <div class="plan-features">
+          <div class="plan-feat">AI in 9+ Indian languages</div>
+          <div class="plan-feat">Unlimited vehicles</div>
+          <div class="plan-feat">2,000 AI calls/month</div>
+          <div class="plan-feat">WhatsApp + SMS + Email</div>
+          <div class="plan-feat">Tour packages builder</div>
+          <div class="plan-feat">Revenue analytics & AI insights</div>
+          <div class="plan-feat">Razorpay payment collection</div>
+          <div class="plan-feat">5 staff logins</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center">Current Plan ✓</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price"><span class="plan-rs">₹12,999</span><span class="plan-mo">/month</span></div>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:-6px">For large fleet operators</div>
+        <div class="plan-features">
+          <div class="plan-feat">Everything in Pro</div>
+          <div class="plan-feat">10,000 AI calls/month</div>
+          <div class="plan-feat">Custom AI voice & branding</div>
+          <div class="plan-feat">Unlimited staff logins</div>
+          <div class="plan-feat">API access</div>
+          <div class="plan-feat">Dedicated account manager</div>
+          <div class="plan-feat">MakeMyTrip / Goibibo sync</div>
+          <div class="plan-feat">SLA: 99.9% uptime</div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;justify-content:center">Upgrade →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── RESELLER PORTAL ──────────── -->
+<div class="page" id="p-reseller">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">🤝 Reseller / White-Label Portal</div><div class="topbar-sub">Sell YatraAI to other travel companies under your own brand</div></div>
+    <div class="topbar-right"><button class="btn btn-primary">+ Add Client</button></div>
+  </div>
+  <div class="content">
+    <div class="invite-card">
+      <div class="invite-title">Grow your business by reselling YatraAI</div>
+      <div class="invite-sub">Invite travel companies to join. You earn 20% recurring commission on every client you bring.</div>
+      <div class="invite-input-row">
+        <input class="invite-input" placeholder="client@travelcompany.com or +91 98765 XXXXX"/>
+        <button class="invite-btn">Send Invite →</button>
+      </div>
+    </div>
+
+    <div class="metrics" style="margin-bottom:18px">
+      <div class="metric"><div class="m-label">Active Clients</div><div class="m-val">12</div><div class="m-sub up">↑ 3 this month</div></div>
+      <div class="metric"><div class="m-label">Monthly Commission</div><div class="m-val">₹18K</div><div class="m-sub up">↑ 25% vs last month</div></div>
+      <div class="metric"><div class="m-label">Total Earned</div><div class="m-val">₹94K</div><div class="m-sub" style="color:var(--muted)">Since Jan 2026</div></div>
+      <div class="metric"><div class="m-label">Next Payout</div><div class="m-val">₹18K</div><div class="m-sub" style="color:var(--muted)">1 May 2026</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-head-title">Your Clients</div></div>
+      <div class="table-wrap">
+        <table class="t">
+          <thead><tr><th>Company</th><th>City</th><th>Plan</th><th>Status</th><th>Monthly Rev.</th><th>Your Commission</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Gupta Travels</td><td>Varanasi</td><td>Pro</td><td><span class="pill pill-green">Active</span></td><td>₹4,999</td><td style="font-weight:600;color:var(--green-mid)">₹1,000</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px">Manage</button></td></tr>
+            <tr><td style="font-weight:600">Royal Cab Service</td><td>Jaipur</td><td>Starter</td><td><span class="pill pill-green">Active</span></td><td>₹1,999</td><td style="font-weight:600;color:var(--green-mid)">₹400</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px">Manage</button></td></tr>
+            <tr><td style="font-weight:600">Himalayan Journeys</td><td>Dehradun</td><td>Enterprise</td><td><span class="pill pill-green">Active</span></td><td>₹12,999</td><td style="font-weight:600;color:var(--green-mid)">₹2,600</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px">Manage</button></td></tr>
+            <tr><td style="font-weight:600">Sai Tours & Travels</td><td>Nagpur</td><td>Pro</td><td><span class="pill pill-orange">Trial</span></td><td>—</td><td style="color:var(--muted)">Pending</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px">Follow up</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── SETTINGS ──────────── -->
+<div class="page" id="p-settings">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">⚙️ Account Settings</div></div>
+    <div class="topbar-right"><button class="btn btn-primary">Save All</button></div>
+  </div>
+  <div class="content">
+    <div style="max-width:600px">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div class="card-head-title">Account Info</div></div>
+        <div style="padding:20px"><div class="form-stack">
+          <div class="field-row">
+            <div class="field"><label class="fl">Owner Name</label><input class="fi" value="Rajesh Kumar Gupta"/></div>
+            <div class="field"><label class="fl">Email</label><input class="fi" value="rajesh@shreeramtravels.in" type="email"/></div>
+          </div>
+          <div class="field"><label class="fl">Change Password</label><input class="fi" placeholder="New password" type="password"/></div>
+        </div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-head-title">Tenant / White-Label Info</div></div>
+        <div style="padding:20px"><div class="form-stack">
+          <div class="field"><label class="fl">Tenant ID (unique)</label><input class="fi" value="shree-ram-travels" readonly style="background:#f5f5f5"/></div>
+          <div class="field"><label class="fl">Custom Domain (optional)</label><input class="fi" value="app.shreeramtravels.in" placeholder="your-brand.yatraai.in"/></div>
+          <div class="field"><label class="fl">Time Zone</label><select class="fi"><option selected>IST (UTC+5:30)</option></select></div>
+          <div class="field"><label class="fl">Currency</label><select class="fi"><option selected>INR (₹)</option><option>USD ($)</option></select></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ��═════════════ MODALS ══════════════ -->
+
+<!-- New Booking Modal -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">+ New Booking</div>
+      <button class="modal-close" onclick="closeModal('booking-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-stack">
+        <div class="field-row">
+          <div class="field"><label class="fl">Customer Name *</label><input class="fi" id="nb-name" placeholder="Ramesh Gupta"/></div>
+          <div class="field"><label class="fl">Phone</label><input class="fi" id="nb-phone" placeholder="+91 98765 43210" type="tel"/></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="fl">Pickup Location</label><input class="fi" id="nb-pickup" placeholder="Delhi"/></div>
+          <div class="field"><label class="fl">Dropoff Location</label><input class="fi" id="nb-dropoff" placeholder="Manali"/></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="fl">Start Date</label><input class="fi" id="nb-start" type="date"/></div>
+          <div class="field"><label class="fl">End Date</label><input class="fi" id="nb-end" type="date"/></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="fl">Amount (₹)</label><input class="fi" id="nb-amount" type="number" placeholder="5000"/></div>
+          <div class="field"><label class="fl">Source</label>
+            <select class="fi" id="nb-source">
+              <option value="manual">Manual</option>
+              <option value="phone">Phone</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="ai_agent">AI Agent</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('booking-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createBooking()">Create Booking →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Vehicle Modal -->
+<div class="modal-overlay" id="vehicle-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">+ Add Vehicle</div>
+      <button class="modal-close" onclick="closeModal('vehicle-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-stack">
+        <div class="field-row">
+          <div class="field"><label class="fl">Vehicle Type *</label><input class="fi" id="nv-type" placeholder="Innova Crysta"/></div>
+          <div class="field"><label class="fl">Registration *</label><input class="fi" id="nv-reg" placeholder="UK07 AB 1234"/></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="fl">Capacity (seats)</label><input class="fi" id="nv-cap" type="number" value="7"/></div>
+          <div class="field"><label class="fl">Rate / Day (₹)</label><input class="fi" id="nv-day" type="number" placeholder="4500"/></div>
+        </div>
+        <div class="field-row3">
+          <div class="field"><label class="fl">Rate / KM (₹)</label><input class="fi" id="nv-km" type="number" placeholder="14"/></div>
+          <div class="field"><label class="fl">Airport Rate (₹)</label><input class="fi" id="nv-airport" type="number" placeholder="2500"/></div>
+          <div class="field"><label class="fl">Hourly Rate (₹)</label><input class="fi" id="nv-hourly" type="number" placeholder="350"/></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('vehicle-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addVehicleToAPI()">Add Vehicle →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// YATRAAI BACKEND INTEGRATION
+// ════════════════════════════════════════════════════════════════
+
+const API = 'http://localhost:3000/api';
+const token = () => localStorage.getItem('yatraai_token');
+
+async function apiFetch(path, opts = {}) {
+  try {
+    const res = await fetch(API + path, {
+      ...opts,
+      headers: {
+        'Authorization': 'Bearer ' + token(),
+        'Content-Type': 'application/json',
+        ...(opts.headers || {})
+      }
+    });
+    if (res.status === 401 || res.status === 403) { doLogout(); return null; }
+    return res.json();
+  } catch (e) {
+    console.error('apiFetch error:', e.message);
+    return null;
+  }
+}
+
+// ── AUTH ──────────────────────────────────────────────────────
+
+function checkAuth() {
+  if (!token()) {
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.querySelector('.shell').style.display = 'none';
+  } else {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.querySelector('.shell').style.display = 'flex';
+    initApp();
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+
+  if (!email || !password) { err.textContent = 'Enter email and password.'; err.style.display = 'block'; return; }
+
+  btn.textContent = 'Signing in...';
+  btn.disabled = true;
+  err.style.display = 'none';
+
+  try {
+    const res = await fetch(API + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (data.token) {
+      localStorage.setItem('yatraai_token', data.token);
+      localStorage.setItem('yatraai_user', JSON.stringify(data.user));
+      localStorage.setItem('yatraai_tenant', JSON.stringify(data.tenant));
+      checkAuth();
+    } else {
+      err.textContent = data.error || 'Login failed. Check credentials.';
+      err.style.display = 'block';
+    }
+  } catch (e) {
+    err.textContent = 'Cannot connect to server. Start backend: node server/index.js';
+    err.style.display = 'block';
+  }
+  btn.textContent = 'Sign In →';
+  btn.disabled = false;
+}
+
+function doLogout() {
+  localStorage.removeItem('yatraai_token');
+  localStorage.removeItem('yatraai_user');
+  localStorage.removeItem('yatraai_tenant');
+  if (ws) { ws.close(); ws = null; }
+  document.getElementById('login-overlay').style.display = 'flex';
+  document.querySelector('.shell').style.display = 'none';
+}
+
+function initApp() {
+  const tenant = JSON.parse(localStorage.getItem('yatraai_tenant') || '{}');
+  if (tenant.name) {
+    document.getElementById('sb-name').textContent = tenant.name;
+    document.getElementById('sb-av').textContent = tenant.name.slice(0, 2).toUpperCase();
+    document.getElementById('sb-plan').textContent =
+      (tenant.plan || 'starter').charAt(0).toUpperCase() + (tenant.plan || 'starter').slice(1) + ' Plan · Active';
+    if (tenant.brand_color) applyBrandColor(tenant.brand_color);
+  }
+  const user = JSON.parse(localStorage.getItem('yatraai_user') || '{}');
+  const today = new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const titleEl = document.querySelector('#p-dashboard .topbar-title');
+  if (titleEl) titleEl.textContent = `Good ${getGreeting()}, ${user.name || 'Admin'} 👋`;
+  const subEl = document.querySelector('#p-dashboard .topbar-sub');
+  if (subEl) subEl.textContent = `Today is ${today} · ${tenant.name || ''}`;
+
+  loadDashboard();
+  connectWS();
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────
+
+async function loadDashboard() {
+  const data = await apiFetch('/dashboard/stats');
+  if (!data) return;
+  const { stats, recentBookings } = data;
+
+  setText('dash-revenue', '₹' + fmtNum(stats.totalRevenue));
+  setText('dash-calls', stats.totalCalls);
+  setText('dash-calls-sub', stats.totalCalls + ' total call sessions');
+  setText('dash-bookings', stats.confirmedBookings + stats.pendingBookings);
+  setText('dash-bookings-sub', stats.pendingBookings + ' pending confirmation');
+  setText('dash-fleet', stats.availableVehicles + '/' + stats.totalVehicles);
+  setText('dash-fleet-sub', (stats.totalVehicles - stats.availableVehicles) + ' busy or in service');
+  setText('nav-badge-bookings', stats.totalBookings);
+
+  const tbody = document.getElementById('dash-bookings-tbody');
+  if (tbody && recentBookings) {
+    tbody.innerHTML = recentBookings.length ? recentBookings.map(b => `
+      <tr>
+        <td class="td-id">${b.booking_ref}</td>
+        <td>${esc(b.customer_name)}</td>
+        <td>${esc(b.pickup || '—')} → ${esc(b.dropoff || '—')}</td>
+        <td>${esc(b.vehicle_type || '—')}</td>
+        <td>${b.start_date || '—'}</td>
+        <td style="font-weight:600">₹${fmtNum(b.amount)}</td>
+        <td>${statusPill(b.status)}</td>
+        <td>${sourceBadge(b.source)}</td>
+      </tr>`).join('')
+      : '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">No bookings yet</td></tr>';
+  }
+}
+
+// ── BOOKINGS ──────────────────────────────────────────────────
+
+async function loadBookings() {
+  const data = await apiFetch('/bookings?limit=50');
+  if (!data) return;
+  const { bookings, total } = data;
+
+  const cnt = s => bookings.filter(b => b.status === s).length;
+  setText('bk-all', total);
+  setText('bk-confirmed', cnt('confirmed'));
+  setText('bk-pending', cnt('pending'));
+  setText('bk-ontrip', cnt('on_trip'));
+  setText('bk-completed', cnt('completed'));
+  setText('bk-topbar-sub', total + ' bookings · ₹' + fmtNum(bookings.reduce((a,b)=>a+b.amount,0)) + ' total');
+
+  const tbody = document.getElementById('bookings-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = bookings.length ? bookings.map(b => `
+    <tr>
+      <td class="td-id">${b.booking_ref}</td>
+      <td>${esc(b.customer_name)}</td>
+      <td>${esc(b.customer_phone || '—')}</td>
+      <td>${esc(b.pickup || '—')} → ${esc(b.dropoff || '—')}</td>
+      <td>${esc(b.vehicle_type || '—')}</td>
+      <td>${b.start_date || '—'}</td>
+      <td style="font-weight:600">₹${fmtNum(b.amount)}</td>
+      <td>${statusPill(b.status)}</td>
+      <td>${sourceBadge(b.source)}</td>
+      <td>
+        ${b.status === 'pending'
+          ? `<button class="btn btn-success" style="padding:5px 10px;font-size:11.5px" onclick="confirmBooking(${b.id})">✓ Confirm</button>`
+          : `<button class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px">View</button>`}
+      </td>
+    </tr>`).join('')
+    : '<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted)">No bookings yet</td></tr>';
+}
+
+async function confirmBooking(id) {
+  const r = await apiFetch('/bookings/' + id, { method: 'PUT', body: JSON.stringify({ status: 'confirmed' }) });
+  if (r) { showToast('Booking confirmed!'); loadBookings(); loadDashboard(); }
+}
+
+async function createBooking() {
+  const source = document.getElementById('nb-source')?.value || 'manual';
+  const data = {
+    customer_name: document.getElementById('nb-name').value.trim(),
+    customer_phone: document.getElementById('nb-phone').value.trim(),
+    pickup: document.getElementById('nb-pickup').value.trim(),
+    dropoff: document.getElementById('nb-dropoff').value.trim(),
+    start_date: document.getElementById('nb-start').value,
+    end_date: document.getElementById('nb-end').value,
+    amount: parseFloat(document.getElementById('nb-amount').value) || 0,
+    source, status: 'pending',
+  };
+  if (!data.customer_name) { showToast('Customer name is required', 'error'); return; }
+  const r = await apiFetch('/bookings', { method: 'POST', body: JSON.stringify(data) });
+  if (r && r.id) {
+    closeModal('booking-modal');
+    showToast('Booking created: ' + r.booking_ref);
+    // clear form
+    ['nb-name','nb-phone','nb-pickup','nb-dropoff','nb-start','nb-end','nb-amount'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    loadBookings(); loadDashboard();
+  } else {
+    showToast((r && r.error) || 'Failed to create booking', 'error');
+  }
+}
+
+// ── FLEET ─────────────────────────────────────────────────────
+
+async function loadFleet() {
+  const vehicles = await apiFetch('/fleet');
+  if (!vehicles) return;
+  const tbody = document.getElementById('fleet-mgmt-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = vehicles.length ? vehicles.map(v => `
+    <tr>
+      <td style="font-weight:600">${esc(v.type)}</td>
+      <td>${esc(v.registration)}</td>
+      <td>${v.capacity} Seater</td>
+      <td style="font-weight:600">₹${fmtNum(v.rate_per_day)}</td>
+      <td>₹${v.rate_per_km}/km</td>
+      <td>${statusPill(v.status)}</td>
+      <td>
+        <select class="fi" style="font-size:12px;padding:4px 8px;width:130px" onchange="updateVehicleStatus(${v.id}, this.value)">
+          <option value="available" ${v.status==='available'?'selected':''}>Available</option>
+          <option value="on_trip" ${v.status==='on_trip'?'selected':''}>On Trip</option>
+          <option value="maintenance" ${v.status==='maintenance'?'selected':''}>Maintenance</option>
+        </select>
+      </td>
+    </tr>`).join('')
+    : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">No vehicles yet. Add one!</td></tr>';
+}
+
+async function updateVehicleStatus(id, status) {
+  await apiFetch('/fleet/' + id, { method: 'PUT', body: JSON.stringify({ status }) });
+  showToast('Fleet status updated');
+  loadDashboard();
+}
+
+async function addVehicleToAPI() {
+  const data = {
+    type: document.getElementById('nv-type').value.trim(),
+    registration: document.getElementById('nv-reg').value.trim(),
+    capacity: parseInt(document.getElementById('nv-cap').value) || 4,
+    rate_per_day: parseFloat(document.getElementById('nv-day').value) || 0,
+    rate_per_km: parseFloat(document.getElementById('nv-km').value) || 0,
+    rate_airport: parseFloat(document.getElementById('nv-airport').value) || 0,
+    rate_hourly: parseFloat(document.getElementById('nv-hourly').value) || 0,
+  };
+  if (!data.type || !data.registration) { showToast('Type and registration are required', 'error'); return; }
+  const r = await apiFetch('/fleet', { method: 'POST', body: JSON.stringify(data) });
+  if (r && r.id) {
+    closeModal('vehicle-modal');
+    showToast('Vehicle added: ' + r.type);
+    ['nv-type','nv-reg','nv-cap','nv-day','nv-km','nv-airport','nv-hourly'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    loadFleet(); loadDashboard();
+  } else {
+    showToast((r && r.error) || 'Failed to add vehicle', 'error');
+  }
+}
+
+// ── CUSTOMERS ─────────────────────────────────────────────────
+
+async function loadCustomers() {
+  const data = await apiFetch('/customers?limit=50');
+  if (!data) return;
+  const { customers, total } = data;
+  setText('cust-topbar-sub', total + ' customers · ₹' + fmtNum(customers.reduce((a,c)=>a+c.total_spend,0)) + ' lifetime revenue');
+  const tbody = document.getElementById('customers-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = customers.length ? customers.map(c => `
+    <tr>
+      <td style="font-weight:600">${esc(c.name)}</td>
+      <td>${esc(c.phone || '—')}</td>
+      <td>${esc(c.city || '—')}</td>
+      <td>${c.total_trips}</td>
+      <td style="font-weight:600">₹${fmtNum(c.total_spend)}</td>
+      <td>—</td>
+      <td>${c.total_spend > 50000 ? '<span class="pill pill-orange">VIP</span>' : c.total_trips > 3 ? '<span class="pill pill-green">Regular</span>' : '<span class="pill pill-blue">New</span>'}</td>
+      <td><button class="btn btn-ghost" style="font-size:11.5px;padding:4px 10px">View</button></td>
+    </tr>`).join('')
+    : '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">No customers yet</td></tr>';
+}
+
+// ── TOURS ─────────────────────────────────────────────────────
+
+async function loadTours() {
+  const tours = await apiFetch('/tours');
+  if (!tours) return;
+  const grid = document.getElementById('tours-grid');
+  if (!grid) return;
+  const colors = ['#FF6B00','#1A3F7A','#1A6B35','#8B0000','#5B2D8E','#1C6B7A'];
+  grid.innerHTML = tours.map((t, i) => {
+    const incl = Array.isArray(t.inclusions) ? t.inclusions : (typeof t.inclusions === 'string' ? [t.inclusions] : []);
+    return `
+      <div class="card" style="overflow:hidden">
+        <div style="background:${colors[i%colors.length]};padding:18px;color:#fff">
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800">${esc(t.name)}</div>
+          <div style="font-size:12px;opacity:0.8;margin-top:3px">${t.duration_days} Days</div>
+        </div>
+        <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:13px;color:var(--mid)">${esc(t.description || '')}</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--brand)">₹${fmtNum(t.price)} <span style="font-size:12px;font-weight:400;color:var(--muted)">/ vehicle</span></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">${incl.slice(0,3).map(inc=>`<span class="pill pill-orange" style="font-size:11px">${esc(inc)}</span>`).join('')}</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" style="flex:1;justify-content:center;font-size:12px">Edit Package</button>
+            <button class="btn btn-ghost" style="font-size:12px">Duplicate</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('') + `
+    <div class="card" style="border:1.5px dashed var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:260px;cursor:pointer;gap:8px">
+      <div style="font-size:36px">+</div>
+      <div style="font-size:14px;font-weight:600;color:var(--brand)">Create New Package</div>
+      <div style="font-size:12.5px;color:var(--muted);text-align:center;max-width:180px">AI will automatically quote this to customers</div>
+    </div>`;
+}
+
+// ── CALLS ─────────────────────────────────────────────────────
+
+async function loadCalls() {
+  const data = await apiFetch('/calls?limit=20');
+  if (!data) return;
+  const { calls, total } = data;
+  setText('calls-count-pill', total + ' sessions');
+  const tbody = document.getElementById('calls-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = calls.length ? calls.map(c => {
+    const intent = (typeof c.extracted_intent === 'object' && c.extracted_intent)
+      ? c.extracted_intent : {};
+    const intentStr = [intent.destination, intent.vehicle].filter(Boolean).join(' · ') || 'General Inquiry';
+    const time = new Date(c.created_at).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    return `<tr>
+      <td>${time}</td>
+      <td>${esc(c.caller_number)}</td>
+      <td>${c.duration_secs}s</td>
+      <td>${esc(intentStr)}</td>
+      <td>${c.outcome==='booked'?'<span class="pill pill-green">Auto-Booked</span>':c.outcome==='inquiry'?'<span class="pill pill-blue">Inquiry</span>':'<span class="pill pill-gray">Info Sent</span>'}</td>
+    </tr>`;
+  }).join('')
+  : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">No call sessions yet. Simulate one!</td></tr>';
+}
+
+// ── AGENT CONFIG ──────────────────────────────────────────────
+
+async function loadAgentConfig() {
+  const config = await apiFetch('/agent-config');
+  if (!config || config.error) return;
+  setVal('ac-name', config.agent_name || 'Yatra');
+  setVal('ac-greeting', config.greeting || '');
+  setVal('ac-auto-confirm', config.auto_confirm_below || 5000);
+
+  document.querySelectorAll('.voice-opt').forEach(v => v.classList.remove('selected'));
+  const vOpt = document.querySelector(`.voice-opt[data-voice="${config.voice || 'female'}"]`);
+  if (vOpt) vOpt.classList.add('selected');
+
+  const langs = Array.isArray(config.languages) ? config.languages : [];
+  document.querySelectorAll('.lang-chip').forEach(chip => {
+    chip.classList.toggle('sel', langs.includes(chip.textContent.trim()));
+  });
+}
+
+async function saveAgentConfig() {
+  const name    = document.getElementById('ac-name')?.value;
+  const greeting= document.getElementById('ac-greeting')?.value;
+  const auto    = parseFloat(document.getElementById('ac-auto-confirm')?.value) || 5000;
+  const voice   = document.querySelector('.voice-opt.selected')?.dataset.voice || 'female';
+  const languages = [...document.querySelectorAll('.lang-chip.sel')].map(c => c.textContent.trim());
+
+  const r = await apiFetch('/agent-config', {
+    method: 'PUT',
+    body: JSON.stringify({ agent_name: name, greeting, auto_confirm_below: auto, voice, languages })
+  });
+  if (r) { showToast('Agent config saved!'); showPage('integrate'); }
+  else showToast('Save failed', 'error');
+}
+
+// ── AI CHAT ───────────────────────────────────────────────────
+
+let chatHistory = [];
+let chatSessionId = 'sess_' + Date.now();
+
+async function sendChatMessage() {
+  const input = document.getElementById('chat-input');
+  const message = input.value.trim();
+  if (!message) return;
+  input.value = '';
+
+  appendChatBubble('user', message);
+  chatHistory.push({ role: 'user', content: message });
+
+  const thinking = appendChatBubble('assistant', '...', true);
+
+  const result = await apiFetch('/agent/chat', {
+    method: 'POST',
+    body: JSON.stringify({ message, session_id: chatSessionId, conversation_history: chatHistory.slice(-10) })
+  });
+
+  if (thinking) thinking.remove();
+
+  if (result && result.reply) {
+    appendChatBubble('assistant', result.reply);
+    chatHistory.push({ role: 'assistant', content: result.reply });
+
+    if (result.intent) {
+      const tags = [
+        result.intent.destination && `📍 ${result.intent.destination}`,
+        result.intent.vehicle && `🚗 ${result.intent.vehicle}`,
+        result.intent.dates && `📅 ${result.intent.dates}`,
+        result.intent.pax && `👥 ${result.intent.pax} Pax`,
+        result.intent.suggested_price && `💰 ₹${fmtNum(result.intent.suggested_price)}`,
+      ].filter(Boolean);
+      const intentPanel = document.getElementById('chat-intent');
+      if (intentPanel && tags.length) {
+        intentPanel.innerHTML = `<div class="ext-label">🧠 Extracted Intent</div><div class="tags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>`;
+        intentPanel.style.display = 'block';
+      }
+    }
+  } else {
+    appendChatBubble('assistant', 'Could not reach AI. Check ANTHROPIC_API_KEY in .env and restart the server.');
+  }
+}
+
+function appendChatBubble(role, text, isThinking = false) {
+  const container = document.getElementById('chat-messages');
+  if (!container) return null;
+  const div = document.createElement('div');
+  div.className = `t-msg ${role === 'assistant' ? 't-ai' : 't-user'}`;
+  div.innerHTML = `<div class="t-lbl">${role==='assistant'?'YatraAI':'You'}</div>
+    <div class="t-bub">${isThinking ? '<em style="opacity:0.5">Thinking...</em>' : esc(text).replace(/\n/g,'<br>')}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+// ── WEBSOCKET ─────────────────────────────────────────────────
+
+let ws = null;
+
+function connectWS() {
+  if (ws) { try { ws.close(); } catch(e){} }
+  ws = new WebSocket('ws://localhost:3000');
+
+  ws.onopen = () => {
+    console.log('[WS] Connected');
+    showToast('WebSocket connected', 'success');
+  };
+  ws.onmessage = (e) => {
+    try { handleWSEvent(JSON.parse(e.data)); } catch(ex) {}
+  };
+  ws.onerror = () => console.log('[WS] Error');
+  ws.onclose = () => {
+    console.log('[WS] Closed. Reconnecting in 5s...');
+    setTimeout(() => { if (token()) connectWS(); }, 5000);
+  };
+}
+
+function handleWSEvent(data) {
+  switch (data.event) {
+    case 'call_started':
+      setText('dash-caller-name', data.caller_number || 'Unknown');
+      setText('dash-caller-meta', 'Incoming call · AI handling');
+      setText('live-caller-name', data.caller_number || 'Unknown');
+      setText('live-caller-meta', 'In Progress · AI Voice Agent');
+      setText('live-status', 'In Progress');
+      document.getElementById('dash-transcript').innerHTML = '';
+      document.getElementById('live-transcript').innerHTML = '';
+      document.getElementById('live-intent-tags').innerHTML = '';
+      const exEl = document.getElementById('dash-extracted');
+      if (exEl) exEl.style.display = 'none';
+      break;
+
+    case 'transcript_update':
+      ['dash-transcript','live-transcript'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const msg = document.createElement('div');
+        msg.className = `t-msg ${data.speaker==='agent'?'t-ai':'t-user'}`;
+        msg.innerHTML = `<div class="t-lbl">${data.speaker==='agent'?'YatraAI':'Caller'}</div><div class="t-bub">${esc(data.text)}</div>`;
+        el.appendChild(msg);
+        el.scrollTop = el.scrollHeight;
+      });
+      break;
+
+    case 'intent_extracted':
+      if (!data.intent) break;
+      const tags = [
+        data.intent.destination && `📍 ${data.intent.destination}`,
+        data.intent.vehicle && `🚗 ${data.intent.vehicle}`,
+        data.intent.dates && `📅 ${data.intent.dates}`,
+        data.intent.pax && `👥 ${data.intent.pax} Pax`,
+        data.intent.suggested_price && `💰 ₹${fmtNum(data.intent.suggested_price)}`,
+      ].filter(Boolean);
+      const tagsHtml = tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+      const dashExt = document.getElementById('dash-extracted');
+      if (dashExt) { dashExt.style.display='block'; }
+      const dashTags = document.getElementById('dash-intent-tags');
+      if (dashTags) dashTags.innerHTML = tagsHtml;
+      const liveTags = document.getElementById('live-intent-tags');
+      if (liveTags) liveTags.innerHTML = tagsHtml;
+      if (data.intent.suggested_price) {
+        setText('dash-auto-book', `✓ Auto-Book · ₹${fmtNum(data.intent.suggested_price)}`);
+        setText('live-auto-book', `✓ Create Booking · ₹${fmtNum(data.intent.suggested_price)}`);
+      }
+      break;
+
+    case 'booking_created':
+      showToast(`Booking created: ${data.booking_ref || ''}`);
+      loadDashboard();
+      break;
+
+    case 'call_ended':
+      setText('live-status', 'Ended');
+      setText('dash-caller-meta', `Call ended · ${data.outcome || ''} · ${data.duration_secs}s`);
+      loadCalls();
+      loadDashboard();
+      break;
+  }
+}
+
+function simulateWSCall() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ event: 'simulate_call', tenant_id: 1 }));
+    showToast('Simulating live call... watch the transcript!');
+    showPage('live');
+  } else {
+    showToast('WebSocket not connected', 'error');
+  }
+}
+
+// ── PAGE NAVIGATION (with data loaders) ──────────────────────
+
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('p-' + name);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) {
+    el.classList.add('active');
+  } else {
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.getAttribute('onclick')?.includes("'" + name + "'")) n.classList.add('active');
+    });
+  }
+  const loaders = {
+    dashboard: loadDashboard, bookings: loadBookings, fleet: loadFleet,
+    customers: loadCustomers, tours: loadTours, live: loadCalls, agent: loadAgentConfig
+  };
+  if (loaders[name] && token()) loaders[name]();
+}
+
+// ── TIMERS ────────────────────────────────────────────────────
+
+let dashSec = 0, liveSec = 0;
+setInterval(() => {
+  dashSec++; liveSec++;
+  [['dash-timer', dashSec], ['live-timer', liveSec]].forEach(([id, s]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = `00:${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  });
+}, 1000);
+
+// ── BRAND PREVIEW ─────────────────────────────────────────────
+
+function updateBrand() {
+  const name = document.getElementById('co-name')?.value || '';
+  const short = document.getElementById('co-short')?.value || '';
+  ['prev-name','sb-name'].forEach(id=>setText(id,name));
+  ['prev-av','prev-ph-av','sb-av'].forEach(id=>setText(id,short));
+  setText('prev-ph-name', name + ' AI');
+}
+function selectSwatch(el) {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  applyBrandColor(el.dataset.color);
+}
+function updateCustomColor(input) {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+  applyBrandColor(input.value);
+}
+function applyBrandColor(color) {
+  document.documentElement.style.setProperty('--brand', color);
+  ['prev-av','prev-ph-av','prev-ph-send'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.background = color;
+  });
+  const ub = document.getElementById('prev-ph-user');
+  if (ub) ub.style.background = color;
+}
+
+// ── FLEET WIZARD ──────────────────────────────────────────────
+
+function addVehicleRow() {
+  const row = document.createElement('div');
+  row.className = 'veh-row';
+  row.innerHTML = `<input class="fi" placeholder="Vehicle name" style="font-size:13px"/>
+    <input class="fi" placeholder="Reg. number" style="font-size:13px"/>
+    <select class="fi" style="font-size:13px"><option>4 Seater</option><option>6 Seater</option><option>7 Seater</option><option>12 Seater</option><option>16 Seater</option><option>20 Seater</option></select>
+    <select class="fi" style="font-size:13px"><option>Available</option><option>On Trip</option><option>Maintenance</option></select>
+    <button class="del-btn" onclick="this.closest('.veh-row').remove()">✕</button>`;
+  document.getElementById('fleet-rows').appendChild(row);
+}
+
+function selectVoice(el) {
+  document.querySelectorAll('.voice-opt').forEach(v => v.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function saveCompany() { showPage('fleet'); }
+
+// ── CALL SCENARIOS (local playback) ──────────────────────────
+
+const scenarios = [
+  [{role:'ai',text:'Namaste! Shree Ram Travels. Main aapki kaise madad kar sakta hoon?'},{role:'user',text:'Bhai, kal ke liye Agra trip chahiye, Innova milegi?'},{role:'ai',text:'Ji bilkul! Innova Crysta kal ke liye available hai — ₹4,500/day. Kitne log jaayenge?'},{role:'user',text:'4 log hain, Lucknow se.'},{role:'ai',text:'Lko → Agra, Innova Crysta, kal — ₹4,500. Driver ghar aayega. Confirm karoon?'}],
+  [{role:'ai',text:'Namaste! Kaise madad karoon?'},{role:'user',text:'Char Dham yatra package kitne ka hai?'},{role:'ai',text:'Char Dham Yatra — 12 din, ₹28,500/person. Innova Crysta, driver, accommodation included. Kab jaana chahte hain?'},{role:'user',text:'June mein, 4 log.'},{role:'ai',text:'June availability hai! ₹28,500 per person. ₹5,000 advance se booking pakki. Confirm karoon?'}],
+  [{role:'ai',text:'Hello! Shree Ram Travels, how may I help you?'},{role:'user',text:'I need 3 cabs for airport pickup tomorrow 5 AM.'},{role:'ai',text:'Sure! 3 Innova Crysta at 5 AM — airport rate ₹2,500 each = ₹7,500 total. Confirm?'},{role:'user',text:'Yes please send to WhatsApp.'},{role:'ai',text:'Confirmed! Driver details sent to your WhatsApp. All 3 arrive 15 min early. Thank you!'}],
+  [{role:'ai',text:'Namaste! Shree Ram Travels. Kaise madad karoon?'},{role:'user',text:'Shaadi ke liye 5 gaadiyan chahiye, Jaipur mein.'},{role:'ai',text:'Ji! 5 Innova Crysta ₹22,500 total (5×4,500). Kab ki shaadi hai?'},{role:'user',text:'20 June ko.'},{role:'ai',text:'20 June, 5 Innova, Jaipur — ₹22,500. Advance bhejne pe confirm hoga. WhatsApp pe quote bhejoon?'}],
+  [{role:'ai',text:'Namaste! Main aapki kaise sahayata karoon?'},{role:'user',text:'Aapka driver bahut late aaya tha!'},{role:'ai',text:'Ji, main samajh sakta hoon. Iske liye dil se maafi. Booking ID bata sakein?'},{role:'user',text:'SRT-2024-001 thi.'},{role:'ai',text:'SRT-2024-001 note ho gaya. Aapko agle booking par discount milega. Manager 30 min mein call karenge.'}],
+];
+
+function runScenario(idx) {
+  const out = document.getElementById('scenario-output');
+  const tran = document.getElementById('scenario-transcript');
+  out.style.display = 'block';
+  tran.innerHTML = '';
+  scenarios[idx].forEach((m, i) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.style.cssText = `display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;${m.role==='user'?'flex-direction:row-reverse;':''}`;
+      const bubble = document.createElement('div');
+      bubble.style.cssText = `max-width:80%;padding:8px 12px;border-radius:10px;font-size:13px;line-height:1.55;${m.role==='ai'?'background:var(--brand-pale);border:0.5px solid var(--border2);border-radius:0 10px 10px 10px;color:var(--ink);':'background:var(--deep);color:rgba(255,255,255,0.88);border-radius:10px 0 10px 10px;'}`;
+      bubble.textContent = m.text;
+      div.appendChild(bubble);
+      tran.appendChild(div);
+    }, i * 600);
+  });
+}
+
+function goLive() {
+  const btn = event.target;
+  btn.textContent = '🎉 You\'re Live!';
+  btn.style.background = 'var(--green-mid)';
+  btn.disabled = true;
+  setTimeout(() => showPage('dashboard'), 1200);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+
+function setText(id, v) { const el=document.getElementById(id); if(el) el.textContent=v; }
+function setVal(id, v)  { const el=document.getElementById(id); if(el) el.value=v; }
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmtNum(n) {
+  const num = parseFloat(n) || 0;
+  if (num >= 100000) return (num/100000).toFixed(1) + 'L';
+  if (num >= 1000)   return (num/1000).toFixed(1) + 'K';
+  return num.toLocaleString('en-IN');
+}
+function statusPill(s) {
+  const m = { confirmed:'pill-green', pending:'pill-orange', on_trip:'pill-blue',
+    completed:'pill-gray', cancelled:'pill-red', available:'pill-green',
+    maintenance:'pill-amber' };
+  return `<span class="pill ${m[s]||'pill-gray'}"><span class="pill-dot"></span>${s}</span>`;
+}
+function sourceBadge(s) {
+  const m = { ai_agent:'🎙 AI Call', phone:'📞 Phone', whatsapp:'💬 WhatsApp', manual:'✏️ Manual', website:'🌐 Website' };
+  return `<span style="font-size:11.5px;color:var(--muted)">${m[s]||s}</span>`;
+}
+function openModal(id)  { document.getElementById(id).style.display = 'flex'; }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function showToast(msg, type = 'success') {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:24px;right:24px;background:${type==='error'?'var(--red)':'var(--green-mid)'};color:#fff;padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:500;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);animation:fadeIn 0.2s ease`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ── BOOT ──────────────────────────────────────────────────────
+
+checkAuth();
+</script>
+</body>
+</html>
