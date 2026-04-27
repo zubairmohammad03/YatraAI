@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 node_modules/
 .env
+=======
+node_modules/ 
+.env 
+*.db 
+*.db-shm 
+*.db-wal 
+>>>>>>> upstream/main

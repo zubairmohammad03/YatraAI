@@ -1,136 +1,165 @@
-# 🚗 YatraWheels — AI Car Rental Voice Agent Prototype
+# YatraAI — White-Label AI Voice Agent Platform for Indian Travel Companies
 
-An AI-powered car rental agent that handles customer queries in **Hindi, English, or Hinglish** using Claude.
+## Overview
 
----
+A complete full-stack SaaS platform that gives Indian car rental and travel companies an AI voice agent that:
 
-## 🚀 Setup & Run
+- Answers customer calls 24/7 in Hindi, English, and Hinglish
+- Automatically quotes prices, creates bookings, sends WhatsApp confirmations
+- Manages fleet, tour packages, customers, and revenue analytics
+- Can be white-labeled for any travel company in minutes
 
-### 1. Install dependencies
+## Features
+
+- 🎙️ AI Voice Agent (powered by Claude AI) — responds in Hindi/English
+- 📋 End-to-end booking automation
+- 🚗 Fleet management with real-time availability
+- 🗺️ Tour package builder
+- 👥 Customer database with VIP segmentation
+- 💡 AI insights and revenue analytics
+- 🏢 Multi-tenant white-label support
+- 🔗 WebSocket live call simulation
+- 🔐 JWT authentication
+
+## Tech Stack
+
+### Frontend
+- Vanilla HTML/CSS/JavaScript
+- WebSocket client for live agent
+
+### Backend
+- Node.js + Express.js
+- SQLite (via better-sqlite3)
+- WebSocket (ws)
+- JWT authentication (jsonwebtoken)
+- bcryptjs for password hashing
+
+### AI & Integrations
+- Anthropic Claude API (claude-sonnet-4-6)
+- Ready for: Twilio (voice), Razorpay (payments), WhatsApp Business
+
+## Project Structure
+
+```
+YatraAI/
+├── yatraai-whitelabel.html    # Main frontend
+├── server/
+│   ├── index.js               # Express + WebSocket server
+│   ├── db.js                  # SQLite database + migrations
+│   ├── seed.js                # Demo data seeder
+│   ├── middleware/
+│   │   └── auth.js            # JWT middleware
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── bookings.js
+│   │   ├── fleet.js
+│   │   ├── customers.js
+│   │   ├── tours.js
+│   │   ├── calls.js
+│   │   ├── dashboard.js
+│   │   └── agent.js
+│   └── services/
+│       ├── aiAgent.js         # Claude AI integration
+│       └── websocket.js       # WebSocket event handlers
+├── .env.example
+├── package.json
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v18+
+- An Anthropic API key (get one at [console.anthropic.com](https://console.anthropic.com))
+
+### Installation
+
 ```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/yatraai.git
+cd yatraai
+
+# Install dependencies
 npm install
-```
 
-### 2. Add your Anthropic API key
-Edit `.env` and replace the placeholder:
-```
-ANTHROPIC_API_KEY=sk-ant-your-actual-key-here
-```
+# Set up environment variables
+cp .env.example .env
+# Edit .env and add your ANTHROPIC_API_KEY
 
-### 3. Start the backend server
-```bash
+# Seed the database with demo data
+node server/seed.js
+
+# Start the server
 node server/index.js
-# or: npm start
-```
-Server runs on http://localhost:3000
 
-### 4. Open the frontend
-Open `index.html` directly in your browser, or navigate to:
-```
-http://localhost:3000
+# Open in browser
+# Go to http://localhost:3000
 ```
 
----
+### Demo Login
 
-## 🗣️ Demo Conversation Flow
+| Field    | Value                    |
+|----------|--------------------------|
+| Email    | admin@shreeramtravels.in |
+| Password | demo1234                 |
 
-**Step 1** — User types in Hinglish:
-```
-"Mujhe Hyderabad se Bangalore jana hai kal"
-```
-→ AI extracts intent + pickup/drop, asks for vehicle type
+## API Endpoints
 
-**Step 2** — User replies:
-```
-"SUV chahiye"
-```
-→ AI calculates price (570km × ₹18 = ₹10,260), confirms booking
+| Method     | Endpoint             | Description           |
+|------------|----------------------|-----------------------|
+| POST       | /api/auth/login      | Login                 |
+| POST       | /api/auth/register   | Register new tenant   |
+| GET        | /api/dashboard/stats | Dashboard metrics     |
+| GET/POST   | /api/bookings        | List/create bookings  |
+| PUT/DELETE | /api/bookings/:id    | Update/delete booking |
+| GET/POST   | /api/fleet           | List/add vehicles     |
+| GET/POST   | /api/tours           | List/create packages  |
+| GET/POST   | /api/customers       | Customer management   |
+| GET        | /api/calls           | Call session logs     |
+| GET/PUT    | /api/agent-config    | AI agent settings     |
+| POST       | /api/agent/chat      | Chat with AI agent    |
+| GET        | /health              | Server health check   |
 
----
+## Environment Variables
 
-## 💡 Quick Test Prompts
-
-| Prompt | Demonstrates |
-|--------|--------------|
-| `cab chahiye` | Short Hinglish → asks follow-up |
-| `Hyderabad se Bangalore SUV kal 9am` | Full booking in one shot |
-| `SUV ka kitna paisa lagega Chennai ke liye?` | Pricing inquiry |
-| `I need a cab tomorrow morning 8 AM` | English intent detection |
-| `Namaste! Kya services hain?` | Greeting + inquiry |
-
----
-
-## 📐 Pricing Logic
-
-| Vehicle | Rate | Min Fare |
-|---------|------|----------|
-| Sedan   | ₹12/km | ₹500 |
-| SUV     | ₹18/km | ₹500 |
-| Tempo   | ₹22/km | ₹500 |
-
-### Hardcoded Routes
-| Route | Distance |
-|-------|----------|
-| Hyderabad ↔ Bangalore | 570 km |
-| Hyderabad ↔ Vijayawada | 275 km |
-| Hyderabad ↔ Chennai | 630 km |
-| Hyderabad ↔ Mumbai | 710 km |
-| Hyderabad ↔ Delhi | 1500 km |
-| Unknown route | ~300 km (assumed) |
-
----
-
-## 🏗️ Project Structure
-
-```
-/ai-travel-prototype
-  ├── index.html      ← Single page frontend
-  ├── style.css       ← Dark travel-themed UI
-  ├── script.js       ← Chat logic, API calls, rendering
-  ├── server/
-  │     └── index.js  ← Express server, Claude API, pricing
-  ├── .env            ← API key (never commit this!)
-  ├── package.json
-  └── README.md
+```env
+PORT=3000
+JWT_SECRET=your_jwt_secret
+ANTHROPIC_API_KEY=your_anthropic_api_key
+NODE_ENV=development
 ```
 
----
+## White-Label Setup
 
-## 📡 API
+Each travel company gets:
 
-### `POST /chat`
-**Request:**
-```json
-{
-  "messages": [
-    { "role": "user", "content": "Hyderabad se Bangalore SUV chahiye" }
-  ]
-}
-```
+1. Their own tenant in the database
+2. Custom brand colors and logo
+3. Their own fleet and pricing
+4. Their own AI agent with custom greeting
+5. Isolated data from other tenants
 
-**Response:**
-```json
-{
-  "intent": "booking",
-  "entities": {
-    "pickup": "Hyderabad",
-    "drop": "Bangalore",
-    "date": "",
-    "time": "",
-    "vehicle": "SUV"
-  },
-  "response": "Bilkul! SUV ke liye ₹10,260 lagenge...",
-  "price_estimate": "₹10,260 (570 km × ₹18/km)",
-  "booking_complete": false,
-  "calc_detail": { "distance_km": 570, "rate_per_km": 18, "total": 10260 }
-}
-```
+## Roadmap
 
----
+- [ ] Twilio voice integration (real phone calls)
+- [ ] WhatsApp Business API
+- [ ] Razorpay payment collection
+- [ ] Multi-language support (Tamil, Bengali, Gujarati)
+- [ ] Mobile app (React Native)
+- [ ] Cloud deployment (Railway/Render)
 
-## ⚙️ Tech Stack
+## Screenshots
 
-- **Frontend**: Plain HTML + CSS + Vanilla JS
-- **Backend**: Node.js + Express
-- **AI**: Anthropic Claude (claude-sonnet-4-20250514)
-- **No database, no auth, no external services** except Claude API
+*(Add screenshots here)*
+
+## License
+
+MIT
+
+## Built With
+
+- [Claude AI](https://www.anthropic.com) by Anthropic
+- [Express.js](https://expressjs.com)
+- [SQLite](https://www.sqlite.org)
+"# YatraAI" 
