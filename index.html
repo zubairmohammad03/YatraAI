@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YatraWheels — AI Travel Agent</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-brand">
+      <div class="brand-icon">🚗</div>
+      <div>
+        <div class="brand-name">YatraWheels</div>
+        <div class="brand-sub">AI Travel Agent</div>
+      </div>
+    </div>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      Agent Online
+    </div>
+  </header>
+
+  <!-- ── Quick prompt bar ────────────────────────────────────── -->
+  <div class="quick-bar">
+    <button class="quick-btn" data-msg="Cab chahiye Hyderabad se Bangalore">🗺️ Hyd → Blr</button>
+    <button class="quick-btn" data-msg="Mujhe kal Vijayawada jaana hai sedan mein">🚘 To Vijayawada</button>
+    <button class="quick-btn" data-msg="SUV ka kitna paisa lagega Chennai ke liye?">💰 SUV Pricing</button>
+    <button class="quick-btn" data-msg="I need a cab for tomorrow morning 8 AM">⏰ Tomorrow 8AM</button>
+    <button class="quick-btn" data-msg="Namaste! Kya services available hain?">👋 Namaste</button>
+    <button class="quick-btn" data-msg="Hyderabad to Bangalore SUV tomorrow 9am">✅ Full Booking</button>
+  </div>
+
+  <!-- ── Chat window ──────────────────────────────────────────── -->
+  <div class="chat-window" id="chat-window">
+
+    <!-- Welcome screen (hidden once chat starts) -->
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🛣️</div>
+      <h2>Namaste! Kaise help karein?</h2>
+      <p>
+        Book a cab, get price estimates, or ask anything — in Hindi, English, or Hinglish. 
+        Powered by Claude AI.
+      </p>
+      <div class="welcome-routes">
+        <div class="route-tag"><span>📍</span>Hyderabad → Bangalore: 570 km</div>
+        <div class="route-tag"><span>📍</span>Hyderabad → Vijayawada: 275 km</div>
+        <div class="route-tag"><span>📍</span>Hyderabad → Chennai: 630 km</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Input area ──────────────────────────────────────────── -->
+  <div class="input-area">
+    <div class="input-row">
+      <textarea
+        id="user-input"
+        placeholder='Type in Hindi, English, or Hinglish... e.g. "cab chahiye"'
+        rows="1"
+        autocomplete="off"
+        spellcheck="false"
+      ></textarea>
+      <button id="send-btn" title="Send message">
+        ➤
+      </button>
+    </div>
+    <div class="input-hint">
+      Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line &nbsp;·&nbsp; 
+      Sedan ₹12/km &nbsp;·&nbsp; SUV ₹18/km &nbsp;·&nbsp; Tempo ₹22/km
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
